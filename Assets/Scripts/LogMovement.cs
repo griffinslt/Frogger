@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 internal enum StartingSide
 {
@@ -48,8 +49,7 @@ public class LogMovement : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        print("i'm awake");
-        transform.position = new Vector2(0, 2); //should actually be dictated by the spawner
+        startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         _rb2d = GetComponent<Rigidbody2D>();
         _velocity = _rb2d.velocity;
         speed = 1f;
@@ -63,24 +63,5 @@ public class LogMovement : MonoBehaviour
         }
 
         _rb2d.velocity = _velocity;
-    }
-
-    public void Construct(string startingSide, int startingRow)
-    {
-        var xStart = 0;
-        switch (startingSide)
-        {
-            case "left":
-                this.startingSide = StartingSide.Left;
-                xStart = 0; //actually be the leftmost part of the board
-
-                break;
-            case "right":
-                this.startingSide = StartingSide.Right;
-                xStart = 10; //would actually be whatever the rightmost part of the board is
-                break;
-        }
-
-        transform.position = new Vector2(xStart, startingRow);
     }
 }

@@ -1,29 +1,38 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
+using Vector2 = System.Numerics.Vector2;
 
 public class LogSpawner : MonoBehaviour
 {
-    [SerializeField] private float countDownTimer = 3f;
+    [SerializeField] private float logSpawnDelay = 3f;
+    public Transform[] spawnPoints;
     public GameObject log;
 
+     
+
+    
+    
     // Update is called once per frame
     void Update()
     {
-        if (countDownTimer <= 0)
+        if (logSpawnDelay <= 0)
         {
             SpawnLog();
-            countDownTimer = 3f;
+            logSpawnDelay = 3f;
             
         }
         else
         {
-            countDownTimer -= Time.deltaTime;
+            logSpawnDelay -= Time.deltaTime;
         }
     }
 
     private void SpawnLog()
     {
-        Instantiate(log);
+        Transform startingPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Instantiate(log, startingPoint.position, startingPoint.rotation);
         print("log spawned");
     }
 }
