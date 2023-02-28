@@ -22,11 +22,11 @@ public class FrogMovement : MonoBehaviour
 
     private void Update()
     {
-        checkMovement();
+        CheckMovement();
         
     }
 
-    private void checkMovement()
+    private void CheckMovement()
     {
         if (Input.GetKeyDown(KeyCode.W)) 
         {
