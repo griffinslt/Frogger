@@ -1,21 +1,29 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private float spawnDelay = 3f;
+    [SerializeField] private float delay;
+    private float _spawnDelay;
     public Transform[] spawnPoints;
     [SerializeField] private GameObject movingGameObject;
 
+
+    private void Awake()
+    {
+        _spawnDelay = delay;
+    }
+
     private void Update()
     {
-        if (spawnDelay <= 0)
+        if (_spawnDelay <= 0)
         {
             SpawnGameObject();
-            spawnDelay = 3f;
+            _spawnDelay = delay ;
         }
         else
         {
-            spawnDelay -= Time.deltaTime;
+            _spawnDelay -= Time.deltaTime;
         }
     }
 

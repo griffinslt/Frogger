@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 internal enum StartingSide
 {
@@ -17,6 +17,8 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     private Rigidbody2D _rb2d;
     private Vector2 _velocity;
+    private static int ids = 0;
+    private int _id;
 
 
     private void Start()
@@ -26,6 +28,8 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     private void Awake()
     {
+        _id = ids++;
+        print(_id);
         _startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         _rb2d = GetComponent<Rigidbody2D>();
         _velocity = _rb2d.velocity;
@@ -40,5 +44,26 @@ public class SlidingObjectBehaviour : MonoBehaviour
         }
 
         _rb2d.velocity = _velocity;
+    }
+
+    private void Update()
+    {
+        if (!CheckInBounds())
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private bool CheckInBounds()
+    {
+        var x = Math.Abs(transform.position.x);
+        if (x > 8 && _id > 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
