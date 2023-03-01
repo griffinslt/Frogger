@@ -11,13 +11,14 @@ internal enum StartingSide
 [RequireComponent(typeof(Rigidbody2D))]
 public class SlidingObjectBehaviour : MonoBehaviour
 {
+    
 
     [SerializeField] private float speed;
     private StartingSide _startingSide;
 
     private Rigidbody2D _rb2d;
     private Vector2 _velocity;
-    private static int ids = 0;
+    private static int _ids = 0;
     private int _id;
 
 
@@ -28,12 +29,10 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _id = ids++;
-        print(_id);
+        _id = _ids++;
         _startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         _rb2d = GetComponent<Rigidbody2D>();
         _velocity = _rb2d.velocity;
-        //speed = 1f;
         if (_startingSide == StartingSide.Left)
         {
             _velocity.x += speed;

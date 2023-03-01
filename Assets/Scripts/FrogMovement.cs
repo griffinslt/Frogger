@@ -1,12 +1,12 @@
 using UnityEngine;
-
+using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class FrogMovement : MonoBehaviour
 {
 
-
+    public UnityEvent<bool> onTriggerChange;
     [SerializeField] private float speed;
     Rigidbody2D rb2D;
     private Vector2 currentPos;
@@ -52,6 +52,20 @@ public class FrogMovement : MonoBehaviour
         }
 
     }
+    
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            print(collision.gameObject.tag);
+            
+            onTriggerChange?.Invoke(true);
+        }
+
+      
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            print("off trigger");
+            onTriggerChange?.Invoke(false);
+        }
 
     
 }
