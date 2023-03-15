@@ -31,6 +31,5 @@ public class Spawner : MonoBehaviour
     {
         Transform startingPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         Instantiate(movingGameObject, startingPoint.position, startingPoint.rotation);
-        print("item spawned");
     }
 }

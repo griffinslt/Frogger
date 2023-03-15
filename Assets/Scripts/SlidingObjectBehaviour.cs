@@ -65,4 +65,9 @@ public class SlidingObjectBehaviour : MonoBehaviour
             return true;
         }
     }
+
+    public Vector2 GetVelocity()
+    {
+        return _velocity;
+    }
 }
