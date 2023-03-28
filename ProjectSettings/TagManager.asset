@@ -7,6 +7,7 @@ TagManager:
   - Log
   - Car
   - River
+  - Turtle
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Road
   - Water
   - UI
-  - Log
+  - Walkable
   - Frog
   - Car
   - 

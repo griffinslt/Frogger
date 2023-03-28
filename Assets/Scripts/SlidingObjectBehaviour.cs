@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 internal enum StartingSide
@@ -15,11 +16,10 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     [SerializeField] private float speed;
     private StartingSide _startingSide;
-
     private Rigidbody2D _rb2d;
     private Vector2 _velocity;
     private static int _ids = 0;
-    private int _id;
+    [SerializeField] private int id;
 
 
     private void Start()
@@ -29,7 +29,7 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        _id = _ids++;
+        id = _ids++;
         _startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         _rb2d = GetComponent<Rigidbody2D>();
         _velocity = _rb2d.velocity;
@@ -43,6 +43,12 @@ public class SlidingObjectBehaviour : MonoBehaviour
         }
 
         _rb2d.velocity = _velocity;
+        
+        if (id <= 2)
+        {
+            _rb2d.velocity = Vector2.zero;
+        }
+        
     }
 
     private void Update()
@@ -56,14 +62,14 @@ public class SlidingObjectBehaviour : MonoBehaviour
     private bool CheckInBounds()
     {
         var x = Math.Abs(transform.position.x);
-        if (x > 8 && _id > 1)
+        if (x > 8 && this.id > 2)
         {
             return false;
         }
-        else
-        {
-            return true;
-        }
+
+        
+
+        return true;
     }
 
     public Vector2 GetVelocity()

@@ -24,12 +24,10 @@ public class FrogMovement : MonoBehaviour
         
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         CheckMovement();
-        CheckCollisions(); 
-
-
+        CheckCollisions();
     }
 
     private void CheckMovement()
@@ -40,26 +38,26 @@ public class FrogMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)) 
         {
             transform1.eulerAngles = new Vector3(0,0,0);
-            transform1.position = _currentPos + new Vector2(0,1);
-            movement += new Vector2(0,1);
+            transform1.position = _currentPos + new Vector2(0,speed);
+            movement += new Vector2(0,speed);
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
             transform1.eulerAngles = new Vector3(0,0,180);
-            transform1.position = _currentPos + new Vector2(0,-1);
-            movement += new Vector2(0,-1);
+            transform1.position = _currentPos + new Vector2(0,-speed);
+            movement += new Vector2(0,-speed);
         } 
         if (Input.GetKeyDown(KeyCode.D)) 
         {
             transform1.eulerAngles = new Vector3(0,0,-90);
-            transform1.position = _currentPos + new Vector2(1,0);
-            movement += new Vector2(1, 0);
+            transform1.position = _currentPos + new Vector2(speed,0);
+            movement += new Vector2(speed, 0);
         } 
         if (Input.GetKeyDown(KeyCode.A)) 
         {
             transform1.eulerAngles = new Vector3(0,0,90);            
-            transform1.position = _currentPos + new Vector2(-1,0);
-            movement += new Vector2(-1, 0);
+            transform1.position = _currentPos + new Vector2(-speed,0);
+            movement += new Vector2(-speed, 0);
             
         }
 
@@ -82,6 +80,7 @@ public class FrogMovement : MonoBehaviour
         {
             CheckCarCollision(collision);
             CheckLogCollision(collision);
+            CheckTurtleCollision(collision);
             if (!_onPlatform)
             {
                 CheckRiverCollision(collision);
@@ -92,8 +91,18 @@ public class FrogMovement : MonoBehaviour
         }
 
     }
-    
-        // private void OnTriggerEnter2D(Collider2D collision)
+
+    private void CheckTurtleCollision(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Turtle"))
+        {
+            print("on turtle");
+            _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
+            _onPlatform = true;
+        }
+    }
+
+    // private void OnTriggerEnter2D(Collider2D collision)
         // {
         //     CheckCarCollision(collision);
         //     CheckLogCollision(collision);
@@ -108,7 +117,7 @@ public class FrogMovement : MonoBehaviour
             if (collision.gameObject.CompareTag("River") && !_onPlatform)
             {
                 
-                print("in the river");
+                // print("in the river");
             }
             
         }
@@ -117,7 +126,7 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Log"))
             {
-                print("on log");
+                // print("on log");
                 _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
                 _onPlatform = true;
             }
@@ -137,7 +146,7 @@ public class FrogMovement : MonoBehaviour
       
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("Log"))
+            if (collision.CompareTag("Log") || collision.CompareTag("Turtle"))
             {
                 _rb2D.velocity = new Vector2(0, 0);
                 _onPlatform = false;

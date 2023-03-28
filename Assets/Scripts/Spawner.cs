@@ -30,6 +30,10 @@ public class Spawner : MonoBehaviour
     private void SpawnGameObject()
     {
         Transform startingPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        if (gameObject.CompareTag("Turtle"))
+        {
+            print(startingPoint.position.x);
+        }
         Instantiate(movingGameObject, startingPoint.position, startingPoint.rotation);
     }
 }
