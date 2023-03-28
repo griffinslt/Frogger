@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,6 +29,21 @@ public class FrogMovement : MonoBehaviour
     {
         CheckMovement();
         CheckCollisions();
+    }
+
+    private Vector2 RoundPosition(Vector3 position)
+    {
+        if (!_onPlatform)
+        {
+
+
+            float x = (float)Math.Round(position.x);
+            float y = (float)Math.Round(position.y);
+            return new Vector2(x, y);
+        }
+
+        return position;
+        
     }
 
     private void CheckMovement()
@@ -152,6 +168,7 @@ public class FrogMovement : MonoBehaviour
             {
                 _rb2D.velocity = new Vector2(0, 0);
                 _onPlatform = false;
+                transform.position = RoundPosition(transform.position);
             }
            
             onTriggerChange?.Invoke(false);
