@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -15,6 +16,7 @@ public class FrogMovement : MonoBehaviour
     private Rigidbody2D _rb2D;
     private Vector2 _currentPos;
     private bool _onPlatform = false;
+    public ScoreKeeper scoreKeeper;
 
     private void Awake()
     {
@@ -29,6 +31,20 @@ public class FrogMovement : MonoBehaviour
     {
         CheckMovement();
         CheckCollisions();
+        NumOfJumpsCheck();
+    }
+
+    private void NumOfJumpsCheck()
+    {
+        ArrayList milestonesAchieved = new ArrayList();
+        if (_currentPos.y % 10 == 0 )
+        {
+            if (!milestonesAchieved.Contains(_currentPos.y))
+            {
+                milestonesAchieved.Add(_currentPos.y);
+                scoreKeeper.AddScore(10);
+            }
+        }
     }
 
     private Vector2 RoundPosition(Vector3 position)
