@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  _id: 0
+  id: 0
 --- !u!50 &335172701
 Rigidbody2D:
   serializedVersion: 4
@@ -1768,6 +1768,10 @@ PrefabInstance:
     - target: {fileID: 393108983641599517, guid: 2916b3ddb055f47bdbc8a8370b555633, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 393108983641599517, guid: 2916b3ddb055f47bdbc8a8370b555633, type: 3}
+      propertyPath: m_TagString
+      value: Turtle
       objectReference: {fileID: 0}
     - target: {fileID: 1606522008429409940, guid: 2916b3ddb055f47bdbc8a8370b555633, type: 3}
       propertyPath: speed

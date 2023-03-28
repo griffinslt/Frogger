@@ -32,6 +32,7 @@ public class FrogMovement : MonoBehaviour
 
     private void CheckMovement()
     {
+        _currentPos = transform.position;
         Vector2 movement = new Vector2(0, 0);
         var transform1 = transform;
         
@@ -99,6 +100,7 @@ public class FrogMovement : MonoBehaviour
             print("on turtle");
             _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
             _onPlatform = true;
+            transform.position = collision.transform.position;
         }
     }
 
@@ -117,7 +119,7 @@ public class FrogMovement : MonoBehaviour
             if (collision.gameObject.CompareTag("River") && !_onPlatform)
             {
                 
-                // print("in the river");
+                print("in the river");
             }
             
         }
@@ -126,7 +128,7 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Log"))
             {
-                // print("on log");
+                print("on log");
                 _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
                 _onPlatform = true;
             }
