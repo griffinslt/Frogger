@@ -1,7 +1,7 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Tilemaps;
+
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -10,9 +10,10 @@ public class FrogMovement : MonoBehaviour
 
     public UnityEvent<bool> onTriggerChange;
     [SerializeField] private float speed;
+    [SerializeField] private ContactFilter2D filter;
     private Rigidbody2D _rb2D;
     private Vector2 _currentPos;
-    private bool _immuneToWater = false;
+    private bool _onPlatform = false;
 
     private void Awake()
     {
@@ -26,63 +27,88 @@ public class FrogMovement : MonoBehaviour
     private void Update()
     {
         CheckMovement();
+        CheckCollisions(); 
 
-        // Vector3Int groundMap = ground.WorldToCell();
+
     }
 
     private void CheckMovement()
     {
         Vector2 movement = new Vector2(0, 0);
+        var transform1 = transform;
         
         if (Input.GetKeyDown(KeyCode.W)) 
         {
-            transform.eulerAngles = new Vector3(0,0,0);
-            transform.position = _currentPos + new Vector2(0,1);
+            transform1.eulerAngles = new Vector3(0,0,0);
+            transform1.position = _currentPos + new Vector2(0,1);
             movement += new Vector2(0,1);
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
-            transform.eulerAngles = new Vector3(0,0,180);
-            transform.position = _currentPos + new Vector2(0,-1);
+            transform1.eulerAngles = new Vector3(0,0,180);
+            transform1.position = _currentPos + new Vector2(0,-1);
             movement += new Vector2(0,-1);
         } 
         if (Input.GetKeyDown(KeyCode.D)) 
         {
-            transform.eulerAngles = new Vector3(0,0,-90);
-            transform.position = _currentPos + new Vector2(1,0);
+            transform1.eulerAngles = new Vector3(0,0,-90);
+            transform1.position = _currentPos + new Vector2(1,0);
             movement += new Vector2(1, 0);
         } 
         if (Input.GetKeyDown(KeyCode.A)) 
         {
-            transform.eulerAngles = new Vector3(0,0,90);            
-            transform.position = _currentPos + new Vector2(-1,0);
+            transform1.eulerAngles = new Vector3(0,0,90);            
+            transform1.position = _currentPos + new Vector2(-1,0);
             movement += new Vector2(-1, 0);
             
         }
 
         _currentPos += movement;
+        // if (movement.magnitude != 0)
+        // {
+        //     CheckCollisions(); 
+        // }
+
+        
 
     }
-    
-        private void OnTriggerEnter2D(Collider2D collision)
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void CheckCollisions()
+    {
+        List<Collider2D> collider2Ds = new List<Collider2D>();
+        Physics2D.OverlapPoint(_currentPos, filter, collider2Ds);
+        foreach (var collision in collider2Ds)
         {
             CheckCarCollision(collision);
-            onTriggerChange?.Invoke(true);
             CheckLogCollision(collision);
-            onTriggerChange?.Invoke(true);
-            CheckRiverCollision(collision);
+            if (!_onPlatform)
+            {
+                CheckRiverCollision(collision);
+            }
             
             
-            onTriggerChange?.Invoke(true);
-
             
         }
 
+    }
+    
+        // private void OnTriggerEnter2D(Collider2D collision)
+        // {
+        //     CheckCarCollision(collision);
+        //     CheckLogCollision(collision);
+        //     CheckRiverCollision(collision);
+        //     onTriggerChange?.Invoke(true);
+        //
+        //     
+        // }
+
         private void CheckRiverCollision(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("River") && !_immuneToWater)
+            if (collision.gameObject.CompareTag("River") && !_onPlatform)
             {
-                print("in the river died");
+                
+                print("in the river");
             }
             
         }
@@ -91,36 +117,37 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Log"))
             {
-                print("log");
+                print("on log");
                 _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-                _immuneToWater = true;
+                _onPlatform = true;
             }
+
         }
 
         private void CheckCarCollision(Collider2D collision)
         {
-            
-                if (collision.gameObject.CompareTag("Car"))
-                {
-                    print("you died");
+            if (collision.gameObject.CompareTag("Car"))
+            {
+                print("hit by car");
 
-                }
-            
+            }
+
         }
 
       
         private void OnTriggerExit2D(Collider2D collision)
         {
-            CheckRiverCollision(collision);
-            _rb2D.velocity = new Vector2(0, 0);
-            // print("off trigger");
-            _immuneToWater = false;
+            if (collision.CompareTag("Log"))
+            {
+                _rb2D.velocity = new Vector2(0, 0);
+                _onPlatform = false;
+            }
+           
             onTriggerChange?.Invoke(false);
         }
-        
-    
-        
-        
 
-    
+
+
+
+
 }
