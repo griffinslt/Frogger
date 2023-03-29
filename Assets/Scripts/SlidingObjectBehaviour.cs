@@ -62,7 +62,7 @@ public class SlidingObjectBehaviour : MonoBehaviour
     private bool CheckInBounds()
     {
         var x = Math.Abs(transform.position.x);
-        if (x > 8 && this.id > 2)
+        if (x > 10 && this.id > 2)
         {
             return false;
         }

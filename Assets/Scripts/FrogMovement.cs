@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -16,43 +14,36 @@ public class FrogMovement : MonoBehaviour
     private Rigidbody2D _rb2D;
     private Vector2 _currentPos;
     private bool _onPlatform = false;
+    private int _furthestTraveled;
     public ScoreKeeper scoreKeeper;
+    
 
     private void Awake()
     {
-        print("awake player");
         _rb2D = GetComponent<Rigidbody2D>();
         _currentPos = transform.position;
-        print(_currentPos);
-        
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         CheckMovement();
         CheckCollisions();
-        NumOfJumpsCheck();
     }
 
     private void NumOfJumpsCheck()
     {
-        ArrayList milestonesAchieved = new ArrayList();
-        if (_currentPos.y % 10 == 0 )
+        if (_furthestTraveled < _currentPos.y)
         {
-            if (!milestonesAchieved.Contains(_currentPos.y))
-            {
-                milestonesAchieved.Add(_currentPos.y);
-                scoreKeeper.AddScore(10);
-            }
+            _furthestTraveled = (int) _currentPos.y;
+            scoreKeeper.AddScore(10);
         }
+        
     }
 
     private Vector2 RoundPosition(Vector3 position)
     {
         if (!_onPlatform)
         {
-
-
             float x = (float)Math.Round(position.x);
             float y = (float)Math.Round(position.y);
             return new Vector2(x, y);
@@ -68,11 +59,14 @@ public class FrogMovement : MonoBehaviour
         Vector2 movement = new Vector2(0, 0);
         var transform1 = transform;
         
+        
+        
         if (Input.GetKeyDown(KeyCode.W)) 
         {
             transform1.eulerAngles = new Vector3(0,0,0);
             transform1.position = _currentPos + new Vector2(0,speed);
             movement += new Vector2(0,speed);
+            NumOfJumpsCheck();
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
@@ -95,13 +89,7 @@ public class FrogMovement : MonoBehaviour
         }
 
         _currentPos += movement;
-        // if (movement.magnitude != 0)
-        // {
-        //     CheckCollisions(); 
-        // }
-
-        
-
+       
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -129,8 +117,8 @@ public class FrogMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Turtle"))
         {
-            print("on turtle");
-            _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
+            //print("on turtle");
+            _rb2D.velocity = collision.GetComponent<Rigidbody2D>().velocity;
             _onPlatform = true;
             transform.position = collision.transform.position;
         }
@@ -151,7 +139,7 @@ public class FrogMovement : MonoBehaviour
             if (collision.gameObject.CompareTag("River") && !_onPlatform)
             {
                 
-                print("in the river");
+                //print("in the river");
             }
             
         }
@@ -160,7 +148,7 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Log"))
             {
-                print("on log");
+                //print("on log");
                 _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
                 _onPlatform = true;
             }
@@ -171,7 +159,7 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Car"))
             {
-                print("hit by car");
+                //print("hit by car");
 
             }
 
