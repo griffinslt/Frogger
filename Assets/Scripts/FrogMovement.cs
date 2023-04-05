@@ -18,7 +18,7 @@ public class FrogMovement : MonoBehaviour
     public ScoreKeeper scoreKeeper;
     public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
-    
+
 
     private void Awake()
     {
@@ -134,7 +134,7 @@ public class FrogMovement : MonoBehaviour
             }
             else if (!home.HasBeenVisited())
             {
-                homeFrogSpawner.SpawnHomeFrog(collision.transform.position);
+                homeFrogSpawner.SpawnHomeFrog(collision.transform);
                 scoreKeeper.AddScore(50);
             }
             home.Visit();

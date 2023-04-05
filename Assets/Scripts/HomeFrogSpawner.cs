@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class HomeFrogSpawner : MonoBehaviour
 {
-   public void SpawnHomeFrog(Vector2 coords)
+   [SerializeField] private GameObject homeFrog;
+   public void SpawnHomeFrog(Transform otherTransform)
    {
-      //Todo instantiate home frog here 
+      Instantiate(homeFrog, otherTransform.position, otherTransform.rotation);
       print("Spawn home frog");
    }
     
