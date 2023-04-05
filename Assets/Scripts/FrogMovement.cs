@@ -44,6 +44,8 @@ public class FrogMovement : MonoBehaviour
     {
         if (!_onPlatform)
         {
+
+
             float x = (float)Math.Round(position.x);
             float y = (float)Math.Round(position.y);
             return new Vector2(x, y);
