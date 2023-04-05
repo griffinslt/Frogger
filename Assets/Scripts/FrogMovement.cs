@@ -18,6 +18,17 @@ public class FrogMovement : MonoBehaviour
     public ScoreKeeper scoreKeeper;
     public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
+    private bool _isPaused;
+
+    public void Pause()
+    {
+        _isPaused = true;
+    }
+
+    public void Play()
+    {
+        _isPaused = false;
+    }
 
 
     private void Awake()
@@ -28,8 +39,12 @@ public class FrogMovement : MonoBehaviour
 
     private void Update()
     {
-        CheckMovement();
-        CheckCollisions();
+        if (Time.timeScale > 0)
+        {
+            CheckMovement();
+            CheckCollisions();
+        }
+        
     }
 
     private void NumOfJumpsCheck()

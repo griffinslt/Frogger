@@ -10,7 +10,6 @@ public class HomeFrogSpawner : MonoBehaviour
    public void SpawnHomeFrog(Transform otherTransform)
    {
       Instantiate(homeFrog, otherTransform.position, otherTransform.rotation);
-      print("Spawn home frog");
    }
     
     
