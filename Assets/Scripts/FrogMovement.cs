@@ -13,9 +13,11 @@ public class FrogMovement : MonoBehaviour
     [SerializeField] private ContactFilter2D filter;
     private Rigidbody2D _rb2D;
     private Vector2 _currentPos;
-    private bool _onPlatform = false;
+    private bool _onPlatform;
     private int _furthestTraveled;
     public ScoreKeeper scoreKeeper;
+    public HomeFrogSpawner homeFrogSpawner;
+    private bool _withLadyFrog;
     
 
     private void Awake()
@@ -108,11 +110,29 @@ public class FrogMovement : MonoBehaviour
             {
                 CheckRiverCollision(collision);
             }
-            
-            
-            
+           
+
+
+
         }
 
+    }
+
+    private void CheckHomeCollision(Collider2D collision)
+    {
+        if (collision.CompareTag("Home"))
+        {
+            homeFrogSpawner.SpawnHomeFrog(collision.transform.position);
+            if (_withLadyFrog)
+            {
+                scoreKeeper.AddScore(200);
+                _withLadyFrog = false;
+            }
+            else
+            {
+                scoreKeeper.AddScore(50);
+            }
+        }
     }
 
     private void CheckTurtleCollision(Collider2D collision)
@@ -167,7 +187,12 @@ public class FrogMovement : MonoBehaviour
 
         }
 
-      
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            CheckHomeCollision(collision);
+        }
+
+
         private void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.CompareTag("Log") || collision.CompareTag("Turtle"))
