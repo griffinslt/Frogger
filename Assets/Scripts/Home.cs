@@ -23,8 +23,5 @@ public class Home : MonoBehaviour
     {
         _hasBeenVisitedWithLady = true;
     }
-    
-    
-
-
+ 
 }

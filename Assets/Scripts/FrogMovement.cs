@@ -122,16 +122,22 @@ public class FrogMovement : MonoBehaviour
     {
         if (collision.CompareTag("Home"))
         {
-            homeFrogSpawner.SpawnHomeFrog(collision.transform.position);
-            if (_withLadyFrog)
+            
+            Home home = collision.GetComponent<Home>();
+            
+
+            if (_withLadyFrog && !home.HasBeenVisitedWithLady())
             {
+                home.VisitWithLady();
                 scoreKeeper.AddScore(200);
                 _withLadyFrog = false;
             }
-            else
+            else if (!home.HasBeenVisited())
             {
+                homeFrogSpawner.SpawnHomeFrog(collision.transform.position);
                 scoreKeeper.AddScore(50);
             }
+            home.Visit();
         }
     }
 
