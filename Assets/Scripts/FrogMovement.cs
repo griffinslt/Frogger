@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
-[Serializable]
 public class FrogMovement : MonoBehaviour
 {
 
@@ -27,9 +26,9 @@ public class FrogMovement : MonoBehaviour
         public float DataSpeed;
         public float CurrentPositionX;
         public float CurrentPositionY;
-        
-
-
+        public int DataFurthestTravelled;
+        public bool DataWithLadyFrog;
+        //Todo figure out how score keeper and homefrog spawner can stay connected - home frog spawner can be static
     }
 
     private void Awake()
@@ -226,6 +225,20 @@ public class FrogMovement : MonoBehaviour
             }
            
             onTriggerChange?.Invoke(false);
+        }
+
+        public string ToJson()
+        {
+            var data = new FrogData()
+            {
+                DataSpeed = speed,
+                DataFurthestTravelled = _furthestTraveled,
+                DataWithLadyFrog = _withLadyFrog,
+                CurrentPositionX = _currentPos.x,
+                CurrentPositionY = _currentPos.y,
+            };
+
+            return JsonUtility.ToJson(data);
         }
 
 
