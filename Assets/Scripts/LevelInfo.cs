@@ -5,7 +5,7 @@ public class LevelInfo : MonoBehaviour
 {
     public static LevelInfo Instance { get; set; }
 
-    private static int _timeForLevel = 5;
+    private static int _timeForLevel = 10;
 
     private struct LevelInfoData
     {

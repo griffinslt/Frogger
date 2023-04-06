@@ -12,7 +12,7 @@ public class Saver : MonoBehaviour
 
     private void Start()
     {
-        _gameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;;
+        
     }
 
     private void Awake()
@@ -29,14 +29,19 @@ public class Saver : MonoBehaviour
 
     public static void Save()
     {
+        _gameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
+        string json = "{";
+        int logCount = 0;
         foreach (var gameObjectFromArray in _gameObjects)
         {
             if (gameObjectFromArray.CompareTag("Log"))
             {
-                var json = gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson();
-                print(json);
+                json += "Log" + logCount + ":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                logCount++;
             }
         }
-       
+
+        json += "}";
+        print(json);
     }
 }
