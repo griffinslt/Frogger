@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
-
+[Serializable]
 public class LevelInfo : MonoBehaviour
 {
     public static LevelInfo Instance { get; set; }
 
-    private static int _timeForLevel = 150;
+    [SerializeField]private static int _timeForLevel = 5;
 
     private void Awake()
     {

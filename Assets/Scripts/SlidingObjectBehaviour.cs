@@ -12,41 +12,40 @@ internal enum StartingSide
 [RequireComponent(typeof(Rigidbody2D))]
 public class SlidingObjectBehaviour : MonoBehaviour
 {
-    
-
-    [SerializeField] private float speed;
-    private StartingSide _startingSide;
-    private Rigidbody2D _rb2d;
-    private Vector2 _velocity;
-    private static int _ids = 0;
-    [SerializeField] private int id;
-
-
-    private void Start()
+    [Serializable]
+    private struct ClassData
     {
-        _rb2d.gravityScale = 0f;
+        public float dataSpeed;
+        public int dataIDs;
+        public int dataID;
+        public float currentX;
+        public float currentY;
     }
+    [SerializeField] private float speed;
+    [SerializeField] private static int _ids = 0;
+    [SerializeField] private int id;
 
     private void Awake()
     {
+        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+        rb2d.gravityScale = 0f;
         id = _ids++;
-        _startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
-        _rb2d = GetComponent<Rigidbody2D>();
-        _velocity = _rb2d.velocity;
-        if (_startingSide == StartingSide.Left)
+        var startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
+        var velocity = rb2d.velocity;
+        if (startingSide == StartingSide.Left)
         {
-            _velocity.x += speed;
+            velocity.x += speed;
         }
         else
         {
-            _velocity.x -= speed;
+            velocity.x -= speed;
         }
 
-        _rb2d.velocity = _velocity;
+        rb2d.velocity = velocity;
         
         if (id <= 2)
         {
-            _rb2d.velocity = Vector2.zero;
+            rb2d.velocity = Vector2.zero;
         }
         
     }
@@ -66,14 +65,21 @@ public class SlidingObjectBehaviour : MonoBehaviour
         {
             return false;
         }
-
-        
-
         return true;
     }
 
-    public Vector2 GetVelocity()
+    public string ToJson()
     {
-        return _velocity;
+        var data = new ClassData
+        {
+            dataSpeed = speed,
+            dataIDs = _ids,
+            dataID = id,
+            currentX = transform.position.x,
+            currentY = transform.position.y,
+        };
+
+        return JsonUtility.ToJson(data);
+
     }
 }

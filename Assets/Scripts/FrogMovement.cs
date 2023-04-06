@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
+[Serializable]
 public class FrogMovement : MonoBehaviour
 {
 
@@ -18,8 +19,19 @@ public class FrogMovement : MonoBehaviour
     public ScoreKeeper scoreKeeper;
     public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
-    private bool _isPaused;
     
+    
+    [Serializable]
+    private struct FrogData
+    {
+        public float DataSpeed;
+        public float CurrentPositionX;
+        public float CurrentPositionY;
+        
+
+
+    }
+
     private void Awake()
     {
         _rb2D = GetComponent<Rigidbody2D>();
@@ -97,6 +109,7 @@ public class FrogMovement : MonoBehaviour
         }
 
         _currentPos += movement;
+        
        
     }
 

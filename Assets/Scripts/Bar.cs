@@ -19,6 +19,6 @@ public class Bar : MonoBehaviour
 
     private void GameOver()
     {
-        print("GameOver");
+        Saver.Save();
     }
 }
