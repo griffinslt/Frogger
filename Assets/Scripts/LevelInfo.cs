@@ -1,11 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelInfo : MonoBehaviour
 {
-    private static int _timeForLevel;
+    public static LevelInfo Instance { get; set; }
 
+    private static int _timeForLevel = 150;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
+
+    }
 
     public static int GetTime()
     {

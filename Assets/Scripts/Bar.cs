@@ -8,6 +8,7 @@ public class Bar : MonoBehaviour
 
     void Start()
     {
+        time = LevelInfo.GetTime();
         AnimateBar();
     }
     
