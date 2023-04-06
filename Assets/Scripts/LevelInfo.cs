@@ -5,7 +5,13 @@ public class LevelInfo : MonoBehaviour
 {
     public static LevelInfo Instance { get; set; }
 
-    [SerializeField]private static int _timeForLevel = 5;
+    private static int _timeForLevel = 5;
+
+    private struct LevelInfoData
+    {
+        public int DataTimeForLevel;
+        public int CurrentTime;
+    }
 
     private void Awake()
     {
@@ -23,5 +29,15 @@ public class LevelInfo : MonoBehaviour
     public static int GetTime()
     {
         return _timeForLevel;
+    }
+
+    public string ToJson()
+    {
+        var data = new LevelInfoData()
+        {
+            DataTimeForLevel = _timeForLevel,
+            CurrentTime = (int)Time.time
+        };
+        return JsonUtility.ToJson(data);
     }
 }
