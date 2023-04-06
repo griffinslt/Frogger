@@ -19,18 +19,7 @@ public class FrogMovement : MonoBehaviour
     public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
     private bool _isPaused;
-
-    public void Pause()
-    {
-        _isPaused = true;
-    }
-
-    public void Play()
-    {
-        _isPaused = false;
-    }
-
-
+    
     private void Awake()
     {
         _rb2D = GetComponent<Rigidbody2D>();
