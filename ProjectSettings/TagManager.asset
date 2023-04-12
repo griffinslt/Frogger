@@ -9,6 +9,8 @@ TagManager:
   - River
   - Turtle
   - Home
+  - Frog
+  - HomeFrog
   layers:
   - Default
   - TransparentFX

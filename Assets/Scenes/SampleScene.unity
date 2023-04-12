@@ -1733,7 +1733,7 @@ GameObject:
   - component: {fileID: 750302747}
   m_Layer: 7
   m_Name: Frog
-  m_TagString: Untagged
+  m_TagString: Frog
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3820,6 +3820,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5992269412418748842, guid: 66c3a9d1cd77845dca0be1680f37c9c6, type: 3}
       propertyPath: m_Name
+      value: HomeFrog
+      objectReference: {fileID: 0}
+    - target: {fileID: 5992269412418748842, guid: 66c3a9d1cd77845dca0be1680f37c9c6, type: 3}
+      propertyPath: m_TagString
       value: HomeFrog
       objectReference: {fileID: 0}
     - target: {fileID: 6748024914942788887, guid: 66c3a9d1cd77845dca0be1680f37c9c6, type: 3}

@@ -32,13 +32,34 @@ public class Saver : MonoBehaviour
         _gameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
         string json = "{";
         int logCount = 0;
+        int turtleCount = 0;
+        int carCount = 0;
+        int homeFrogCount = 0;
         foreach (var gameObjectFromArray in _gameObjects)
         {
             if (gameObjectFromArray.CompareTag("Log"))
             {
                 json += "Log" + logCount + ":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
                 logCount++;
+            } else if (gameObjectFromArray.CompareTag("Frog"))
+            {
+                json += "Frog:" + gameObjectFromArray.GetComponent<FrogMovement>().ToJson() + ",";
             }
+            else if (gameObjectFromArray.CompareTag("Turtle"))
+            {
+                json += "Turtle" + turtleCount + ":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                turtleCount++;
+            } else if (gameObjectFromArray.CompareTag("Car"))
+            {
+                json += "Car" + carCount + ":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                carCount++;
+            } else if (gameObjectFromArray.CompareTag("HomeFrog"))
+            {
+                json += "HomeFrog" + homeFrogCount + ":" + gameObjectFromArray.GetComponent<HomeFrog>().ToJson() + ",";
+                homeFrogCount++;
+            }
+            
+            
         }
 
         json += "}";
