@@ -8,13 +8,9 @@ public class Saver : MonoBehaviour
 {
     public static Saver Instance { get; set; }
     private static GameObject[] _gameObjects;
-    public static string FOLDER; 
-
-    private void Start()
-    {
-        
-    }
-
+    private static string _folder;
+    private static string _sceneName;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this) 
@@ -25,33 +21,26 @@ public class Saver : MonoBehaviour
         { 
             Instance = this; 
         }
+        _sceneName = SceneManager.GetActiveScene().name;
+        _folder = Application.dataPath + "/SaveFiles/" +  SceneManager.GetActiveScene().name + "/"; 
         
-        FOLDER = Application.dataPath + "/SaveFiles/" +  SceneManager.GetActiveScene().name + "/"; 
     }
 
     public static void Save()
     {
-        if (!Directory.Exists(FOLDER))
+        if (!Directory.Exists(_folder))
         {
-            Directory.CreateDirectory(FOLDER);
+            Directory.CreateDirectory(_folder);
         }
         string dateTime = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         string json = GetJson();
-        File.WriteAllText(FOLDER + dateTime + ".json", json);
+        File.WriteAllText(_folder + dateTime + ".json", json);
         CheckHighScore();
     }
 
     private static void CheckHighScore()
     {
-        /*
-         * Check if highs core file exists for level
-         * if it doesn't create the score and get the score for score keeper and save it
-         * if it already exists read in file and see if the number scored is greater
-         * (I think just text file is fine - json if you decide to have profiles)
-         * If score from score keeper is greater, clear file and write new score instead
-         */
-
-        string highScoreFilePath = FOLDER + "HIGHSCORE.txt";
+        string highScoreFilePath = _folder + "HIGHSCORE.txt";
         int score = ScoreKeeper.GetScore();
         if (!File.Exists(highScoreFilePath))
         {
