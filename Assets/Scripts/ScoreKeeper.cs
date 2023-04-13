@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public class ScoreKeeper : MonoBehaviour
 {
+    public static ScoreKeeper Instance { get; set; }
     private int _scoreMultiplier = 1; //change this when using a 2x multiplier or something
-    private int _score;
+    private static int _score;
     public TextMeshProUGUI scoreMessage;
 
     private struct ScoreData
@@ -16,6 +17,18 @@ public class ScoreKeeper : MonoBehaviour
         public int ScoreMultiplier;
         public int Score;
         public string ScoreMessage;
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) 
+        {
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        }
     }
 
     public void AddScore(int amount)
@@ -26,7 +39,7 @@ public class ScoreKeeper : MonoBehaviour
     }
 
 
-    public int GetScore()
+    public static int GetScore()
     {
         return _score;
     }

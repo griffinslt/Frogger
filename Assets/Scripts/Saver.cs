@@ -1,6 +1,7 @@
 
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Saver : MonoBehaviour
@@ -25,7 +26,7 @@ public class Saver : MonoBehaviour
             Instance = this; 
         }
         
-        FOLDER = Application.dataPath + "/SaveFiles/"; 
+        FOLDER = Application.dataPath + "/SaveFiles/" +  SceneManager.GetActiveScene().name + "/"; 
     }
 
     public static void Save()
@@ -37,6 +38,35 @@ public class Saver : MonoBehaviour
         string dateTime = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         string json = GetJson();
         File.WriteAllText(FOLDER + dateTime + ".json", json);
+        CheckHighScore();
+    }
+
+    private static void CheckHighScore()
+    {
+        /*
+         * Check if highs core file exists for level
+         * if it doesn't create the score and get the score for score keeper and save it
+         * if it already exists read in file and see if the number scored is greater
+         * (I think just text file is fine - json if you decide to have profiles)
+         * If score from score keeper is greater, clear file and write new score instead
+         */
+
+        string highScoreFilePath = FOLDER + "HIGHSCORE.txt";
+        int score = ScoreKeeper.GetScore();
+        if (!File.Exists(highScoreFilePath))
+        {
+            File.WriteAllText(highScoreFilePath, score.ToString());
+        }
+        else
+        {
+            int oldHighScore = int.Parse(File.ReadAllText(highScoreFilePath));
+            if (oldHighScore < score)
+            {
+                File.WriteAllText(highScoreFilePath, score.ToString());
+            }
+        }
+
+
     }
 
     private static string GetJson()
@@ -69,6 +99,10 @@ public class Saver : MonoBehaviour
             {
                 json += "\"HomeFrog" + homeFrogCount + "\":" + gameObjectFromArray.GetComponent<HomeFrog>().ToJson() + ",";
                 homeFrogCount++;
+            }
+            else if (gameObjectFromArray.name == "ScoreKeeper")
+            {
+                json += "\"ScoreKeeper\":" + gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson() + ",";
             }
         }
 
