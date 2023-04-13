@@ -12,6 +12,7 @@ TagManager:
   - Frog
   - HomeFrog
   - ScoreKeeper
+  - LoadLevelButton
   layers:
   - Default
   - TransparentFX

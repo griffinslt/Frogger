@@ -3,17 +3,15 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 namespace ButtonBehaviours
 {
     public class LoadGameButtonBehaviour : MonoBehaviour
     {
         private static string _folder;
-
-        
-
-        private void Awake()
+        private string[] _files;
+        private void Start()
         {
             _folder = Application.dataPath + "/SaveFiles/";
             for (int i = 1; i < 3; i++)
@@ -27,10 +25,17 @@ namespace ButtonBehaviours
 
         public void SaveLevel1()
         {
+
             string[] files = Directory.EnumerateFiles(_folder + "Level1", "*.json").ToArray();
-            foreach (var file in files) 
+            Array.Reverse(files);
+            var loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
+            for (int i = 0; i < files.Length; i++)
             {
-                print(file);
+                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(files[i]);
+                if (i == loadButtons.Length-1)
+                {
+                    break;
+                }
             }
         }
         
