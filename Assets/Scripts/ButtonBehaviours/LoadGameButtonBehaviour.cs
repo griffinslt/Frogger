@@ -3,16 +3,28 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 
 namespace ButtonBehaviours
 {
     public class LoadGameButtonBehaviour : MonoBehaviour
     {
+        // public static LoadGameButtonBehaviour Instance { get; set; }
         private static string _folder;
-        private string[] _files;
+        private static string[] _files;
         private void Start()
         {
+            
+            // if (Instance != null && Instance != this) 
+            // {
+            //     Destroy(this); 
+            // } 
+            // else 
+            // { 
+            //     Instance = this; 
+            // }
             _folder = Application.dataPath + "/SaveFiles/";
             for (int i = 1; i < 3; i++)
             {
@@ -23,15 +35,20 @@ namespace ButtonBehaviours
             }
         }
 
-        public void SaveLevel1()
+        private void Awake()
+        {
+            
+        }
+
+        public void LoadLevel1()
         {
 
-            string[] files = Directory.EnumerateFiles(_folder + "Level1", "*.json").ToArray();
-            Array.Reverse(files);
+            _files = Directory.EnumerateFiles(_folder + "Level1", "*.json").ToArray();
+            Array.Reverse(_files);
             var loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < _files.Length; i++)
             {
-                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(files[i]);
+                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
                 if (i == loadButtons.Length-1)
                 {
                     break;
@@ -39,14 +56,26 @@ namespace ButtonBehaviours
             }
         }
         
-        public void SaveLevel2()
+        public void LoadLevel2()
         {
             
         }
         
-        public void SaveLevel3()
+        public void LoadLevel3()
         {
             
+        }
+
+        public void LoadSelectedLevel(GameObject button)
+        {
+            int buttonIndex = int.Parse(button.name);
+            if (buttonIndex >= _files.Length)
+            {
+                return;
+            }
+            string chosenFile = _files[buttonIndex];
+            print(chosenFile);
+
         }
     
     }
