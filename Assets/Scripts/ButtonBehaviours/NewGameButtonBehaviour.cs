@@ -7,7 +7,8 @@ namespace ButtonBehaviours
     {
         public void OnButtonPress()
         {
-            SceneManager.LoadScene("Level1"); 
+            SceneManager.LoadScene("Level1");
+            Time.timeScale = 1;
         }
     }
 }

@@ -15,7 +15,6 @@ public class PauseButtonBehaviour : MonoBehaviour
         {
             Play();
         }
-        print("bring up pause menu");
     }
 
     private void Pause()
