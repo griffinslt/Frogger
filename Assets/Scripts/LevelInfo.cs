@@ -13,7 +13,7 @@ public class LevelInfo : MonoBehaviour
         public int CurrentTime;
     }
 
-    private void Awake()
+    private void Start()
     {
         if (Instance != null && Instance != this) 
         { 
@@ -22,7 +22,7 @@ public class LevelInfo : MonoBehaviour
         else 
         { 
             Instance = this; 
-        } 
+        }
 
     }
 
@@ -30,6 +30,7 @@ public class LevelInfo : MonoBehaviour
     {
         return _timeForLevel;
     }
+    
 
     public string ToJson()
     {

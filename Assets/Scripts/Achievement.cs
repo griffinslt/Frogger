@@ -2,9 +2,8 @@ using System.Collections;
 
 public class Achievement
 {
-    public static ArrayList Achievements;
     private bool _unlocked;
-    private string _name;
+    private readonly string _name;
 
     public Achievement(string name)
     {
@@ -19,5 +18,10 @@ public class Achievement
     public void Unlock()
     {
         _unlocked = true;
+    }
+
+    public string GetName()
+    {
+        return _name;
     }
 }
