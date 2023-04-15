@@ -14,6 +14,7 @@ namespace ButtonBehaviours
         // public static LoadGameButtonBehaviour Instance { get; set; }
         private static string _folder;
         private static string[] _files;
+        private GameObject[] loadButtons;
         private void Start()
         {
             
@@ -40,12 +41,21 @@ namespace ButtonBehaviours
             
         }
 
+        private void ClearButtons()
+        {
+            loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
+            foreach (var button in loadButtons)
+            {
+                button.GetComponentInChildren<TextMeshProUGUI>().text = "No Save Data";
+            }
+        }
+
         public void LoadLevel1()
         {
-
+            ClearButtons();
             _files = Directory.EnumerateFiles(_folder + "Level1", "*.json").ToArray();
             Array.Reverse(_files);
-            var loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
+            //loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
             for (int i = 0; i < _files.Length; i++)
             {
                 loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
@@ -58,12 +68,12 @@ namespace ButtonBehaviours
         
         public void LoadLevel2()
         {
-            
+            ClearButtons();
         }
         
         public void LoadLevel3()
         {
-            
+            ClearButtons();
         }
 
         public void LoadSelectedLevel(GameObject button)
