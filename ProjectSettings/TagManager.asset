@@ -13,6 +13,9 @@ TagManager:
   - HomeFrog
   - ScoreKeeper
   - LoadLevelButton
+  - AchievementsMenu
+  - LockedImage
+  - UnlockedImage
   layers:
   - Default
   - TransparentFX

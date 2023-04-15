@@ -8,6 +8,7 @@ public class Achievement
     public Achievement(string name)
     {
         _name = name;
+        _unlocked = false;
     }
 
     public bool IsUnlocked()
