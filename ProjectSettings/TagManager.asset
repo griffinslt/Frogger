@@ -16,6 +16,7 @@ TagManager:
   - AchievementsMenu
   - LockedImage
   - UnlockedImage
+  - UIAchievement
   layers:
   - Default
   - TransparentFX
