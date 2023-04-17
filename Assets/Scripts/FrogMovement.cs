@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,6 +10,7 @@ public class FrogMovement : MonoBehaviour
 {
 
     public UnityEvent<bool> onTriggerChange;
+    [SerializeField] private AchievementManager achievementManager;
     [SerializeField] private float speed;
     [SerializeField] private ContactFilter2D filter;
     private Rigidbody2D _rb2D;
@@ -18,8 +20,9 @@ public class FrogMovement : MonoBehaviour
     public ScoreKeeper scoreKeeper;
     public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
-    
-    
+    private int _numberOfJumps;
+
+
     [Serializable]
     private struct FrogData
     {
@@ -28,6 +31,7 @@ public class FrogMovement : MonoBehaviour
         public float CurrentPositionY;
         public int DataFurthestTravelled;
         public bool DataWithLadyFrog;
+        public int DataNumberOfJumps;
         //Todo figure out how score keeper and homefrog spawner can stay connected - home frog spawner can be static
     }
 
@@ -47,7 +51,7 @@ public class FrogMovement : MonoBehaviour
         
     }
 
-    private void NumOfJumpsCheck()
+    private void NumOfForwardJumpsCheck()
     {
         if (_furthestTraveled < _currentPos.y)
         {
@@ -61,8 +65,6 @@ public class FrogMovement : MonoBehaviour
     {
         if (!_onPlatform)
         {
-
-
             float x = (float)Math.Round(position.x);
             float y = (float)Math.Round(position.y);
             return new Vector2(x, y);
@@ -85,7 +87,7 @@ public class FrogMovement : MonoBehaviour
             transform1.eulerAngles = new Vector3(0,0,0);
             transform1.position = _currentPos + new Vector2(0,speed);
             movement += new Vector2(0,speed);
-            NumOfJumpsCheck();
+            NumOfForwardJumpsCheck();
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
@@ -108,8 +110,38 @@ public class FrogMovement : MonoBehaviour
         }
 
         _currentPos += movement;
+        if (movement.magnitude > 0)
+        {
+            _numberOfJumps++;
+            JumpAchievementCheck();
+        }
         
-       
+    }
+
+    private void JumpAchievementCheck()
+    {
+        try
+        {
+            switch (_numberOfJumps)
+            {
+                case 10:
+                    var achievement = Achievements.FindAchievementByName("10 Jumps");
+                    achievementManager.NotifyAchievementComplete(achievement);
+                    break;
+                case 50:
+                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("50 Jumps"));
+                    break;
+                case 100:
+                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("100 Jumps"));
+                    break;
+            }
+        }
+        catch (KeyNotFoundException e)
+        {
+            Console.WriteLine(e);
+            print("does not exist");
+        }
+        
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -236,6 +268,7 @@ public class FrogMovement : MonoBehaviour
                 DataWithLadyFrog = _withLadyFrog,
                 CurrentPositionX = _currentPos.x,
                 CurrentPositionY = _currentPos.y,
+                DataNumberOfJumps = _numberOfJumps,
             };
 
             return JsonUtility.ToJson(data);

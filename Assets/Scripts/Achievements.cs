@@ -29,6 +29,11 @@ public static class Achievements
 
         throw new KeyNotFoundException();
     }
+
+    public static void Clear()
+    {
+        AchievementsList.Clear();
+    }
     
     
 

@@ -7,57 +7,81 @@ public class AchievementManager : MonoBehaviour
 {
    public AchievementManager Instance { get; private set; }
 
-   private readonly Queue<Achievement> _achievementsQ = new();
+   [SerializeField] private GameObject[] achievementUI;
 
-   public void NotifyAchievementComplete(string nameOfAchievement)
+   private static readonly Queue<Achievement> AchievementsQ = new();
+
+   public void NotifyAchievementComplete(Achievement achievement)
    {
-      _achievementsQ.Enqueue(new Achievement(nameOfAchievement));
+      AchievementsQ.Enqueue(achievement);
    }
 
    private void Start()
    {
-      if (Instance)
+      if (Instance != null && Instance != this) 
       {
-         Destroy(gameObject);
+         Destroy(this); 
+      } 
+      else 
+      { 
+         Instance = this; 
       }
-      else
-      {
-         Instance = this;
-      }
-      
-      SetAchievements();
       StartCoroutine(nameof(AchievementQueueCheck));
-      
    }
 
    private void UnlockAchievement(Achievement achievement)
    {
       achievement.Unlock();
       Achievements.Add(achievement);
+      RunUnlockAchievementAnimation(achievement.GetName());
       print(achievement.GetName() + " has been unlocked");
+   }
+
+   private void RunUnlockAchievementAnimation(string achievementName)
+   {
+      print(achievementUI.Length);
+      switch (achievementName)
+      {
+         case "10 Jumps":
+            achievementUI[0].SetActive(true);
+            break;
+         case "50 Jumps":
+            achievementUI[1].SetActive(true);
+            break;
+         case "100 Jumps":
+            achievementUI[2].SetActive(true);
+            break;
+         case "Level 1 Complete":
+            achievementUI[3].SetActive(true);
+            break;
+         case "Level 2 Complete":
+            achievementUI[4].SetActive(true);
+            break;
+         case "Level 3 Complete":
+            achievementUI[5].SetActive(true);
+            break;
+         case "Completed All Levels":
+            achievementUI[6].SetActive(true);
+            break;
+      }
    }
 
    private IEnumerator AchievementQueueCheck()
    {
       while (true)
       {
-         if (_achievementsQ.Count > 0)
+         if (AchievementsQ.Count > 0)
          {
-            UnlockAchievement(_achievementsQ.Dequeue());
+            UnlockAchievement(AchievementsQ.Dequeue());
          }
-
          yield return new WaitForSeconds(5f);
+         foreach (var achievementInUI in achievementUI)
+         {
+            achievementInUI.SetActive(false);
+         }
+         
       }
    }
    
-   public void SetAchievements()
-   {
-      Achievements.Add(new Achievement("10 Jumps"));
-      Achievements.Add(new Achievement("50 Jumps"));
-      Achievements.Add(new Achievement("100 Jumps"));
-      Achievements.Add(new Achievement("Level 1 Complete"));
-      Achievements.Add(new Achievement("Level 2 Complete"));
-      Achievements.Add(new Achievement("Level 3 Complete"));
-      Achievements.Add(new Achievement("Completed All Levels"));
-   }
+   
 }
