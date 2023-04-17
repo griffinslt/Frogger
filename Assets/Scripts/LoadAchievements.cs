@@ -11,18 +11,15 @@ public class LoadAchievements : MonoBehaviour
     [SerializeField] private GameObject achievementPrefab;
 
     [SerializeField] private Sprite newSprite;
-
-    private void Start()
-    {
-        SetAchievements();
-    }
+    
 
     public void OnButtonPress()
     {
         // iterate through for each achievement using the achievement prefab to instantiate the objects
         foreach (var achievement in Achievements.Get())
         {
-            GameObject newAchievement =Instantiate(achievementPrefab);
+            
+            GameObject newAchievement =Instantiate(achievementPrefab, GameObject.FindGameObjectWithTag("AchievementsMenu").transform, false);
             newAchievement.tag = "UIAchievement";
             if (achievement.IsUnlocked())
             {
@@ -36,25 +33,14 @@ public class LoadAchievements : MonoBehaviour
                     }
                 }
             }
-            newAchievement.transform.SetParent(GameObject.FindGameObjectWithTag("AchievementsMenu").transform, false);
+
             newAchievement.GetComponentInChildren<TextMeshProUGUI>().text = achievement.GetName();
-            //change picture when unlocked
-            
+
         }
 
     }
     
-    public void SetAchievements()
-    {
-        Achievements.Clear();
-        Achievements.Add(new Achievement("10 Jumps"));
-        Achievements.Add(new Achievement("50 Jumps"));
-        Achievements.Add(new Achievement("100 Jumps"));
-        Achievements.Add(new Achievement("Level 1 Complete"));
-        Achievements.Add(new Achievement("Level 2 Complete"));
-        Achievements.Add(new Achievement("Level 3 Complete"));
-        Achievements.Add(new Achievement("Completed All Levels"));
-    }
+    
 
     
 

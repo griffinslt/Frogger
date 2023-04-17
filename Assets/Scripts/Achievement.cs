@@ -29,6 +29,7 @@ public class Achievement
     public void Unlock()
     {
         _unlocked = true;
+        Debug.Log(_name + " is unlocked");
     }
 
     public string GetName()
