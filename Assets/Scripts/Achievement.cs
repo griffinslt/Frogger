@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
+using UnityEngine;
 
+[Serializable()]
 public class Achievement
 {
     private bool _unlocked;
     private readonly string _name;
+    
+    [Serializable]
+    private struct Data
+    {
+        public bool isUnlocked;
+        public string name;
+    }
 
     public Achievement(string name)
     {
@@ -25,4 +35,16 @@ public class Achievement
     {
         return _name;
     }
+
+    public string ToJson()
+    {
+        var data = new Data()
+        {
+            isUnlocked = _unlocked,
+            name = _name,
+        };
+        return JsonUtility.ToJson(data);
+    }
+
+    
 }

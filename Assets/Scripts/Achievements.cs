@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public static class Achievements
 {
@@ -34,10 +37,23 @@ public static class Achievements
     {
         AchievementsList.Clear();
     }
+
     
-    
+    public static string ToJson()
+    {
+        int achievementNumber = 0;
+        string json = "Achievements:{";
+        foreach (var achievement in AchievementsList)
+        {
+            json += "\"Achievement" + achievementNumber + "\":" + achievement.ToJson() + ",";
+            achievementNumber++;
 
+        }
 
+        json = json.Remove(json.Length - 1);
+        json += "},";
 
+        return json;
+    }
 
 }

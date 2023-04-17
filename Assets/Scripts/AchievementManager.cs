@@ -34,12 +34,10 @@ public class AchievementManager : MonoBehaviour
       achievement.Unlock();
       Achievements.Add(achievement);
       RunUnlockAchievementAnimation(achievement.GetName());
-      print(achievement.GetName() + " has been unlocked");
    }
 
    private void RunUnlockAchievementAnimation(string achievementName)
    {
-      print(achievementUI.Length);
       switch (achievementName)
       {
          case "10 Jumps":

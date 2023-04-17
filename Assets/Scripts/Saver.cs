@@ -66,6 +66,7 @@ public class Saver : MonoBehaviour
         int turtleCount = 0;
         int carCount = 0;
         int homeFrogCount = 0;
+        json += Achievements.ToJson();
         foreach (var gameObjectFromArray in _gameObjects)
         {
             if (gameObjectFromArray.CompareTag("Log"))
