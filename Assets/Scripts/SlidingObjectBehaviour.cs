@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 internal enum StartingSide
@@ -14,9 +15,9 @@ public class SlidingObjectBehaviour : MonoBehaviour
     [Serializable]
     private struct ClassData
     {
-        public float dataSpeed;
-        public int dataIDs;
-        public int dataID;
+        public float speed;
+        public int _ids;
+        public int id;
         public float currentX;
         public float currentY;
     }
@@ -69,13 +70,14 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     public string ToJson()
     {
+        var position = transform.position;
         var data = new ClassData
         {
-            dataSpeed = speed,
-            dataIDs = _ids,
-            dataID = id,
-            currentX = transform.position.x,
-            currentY = transform.position.y,
+            speed = speed,
+            _ids = _ids,
+            id = id,
+            currentX = position.x,
+            currentY = position.y,
         };
 
         return JsonUtility.ToJson(data);

@@ -39,7 +39,7 @@ public static class Achievements
     public static string ToJson()
     {
         int achievementNumber = 0;
-        string json = "Achievements:{";
+        string json = "\"Achievements\":{";
         foreach (var achievement in AchievementsList)
         {
             json += "\"Achievement" + achievementNumber + "\":" + achievement.ToJson() + ",";

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[Serializable()]
 public class Achievement
 {
     private bool _unlocked;
@@ -10,14 +10,20 @@ public class Achievement
     [Serializable]
     private struct Data
     {
-        public bool isUnlocked;
-        public string name;
+        public bool _unlocked;
+        public string _name;
     }
 
     public Achievement(string name)
     {
         _name = name;
         _unlocked = false;
+    }
+    
+    public Achievement(string name, bool unlocked)
+    {
+        _name = name;
+        _unlocked = unlocked;
     }
 
     public bool IsUnlocked()
@@ -28,7 +34,6 @@ public class Achievement
     public void Unlock()
     {
         _unlocked = true;
-        Debug.Log(_name + " is unlocked");
     }
 
     public string GetName()
@@ -40,8 +45,8 @@ public class Achievement
     {
         var data = new Data()
         {
-            isUnlocked = _unlocked,
-            name = _name,
+            _unlocked = _unlocked,
+            _name = _name,
         };
         return JsonUtility.ToJson(data);
     }

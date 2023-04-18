@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class AchievementSetter : MonoBehaviour
@@ -9,15 +13,14 @@ public class AchievementSetter : MonoBehaviour
 
     private static void SetAchievements()
     {
-        if (Achievements.Get().Count < 1)
+        var achievementFiles = Directory.EnumerateFiles( "Assets/SaveFiles/Achievements" , "*.json").ToArray();
+        Achievements.Clear();
+        foreach (var file in achievementFiles)
         {
-            Achievements.Add(new Achievement("10 Jumps"));
-            Achievements.Add(new Achievement("50 Jumps"));
-            Achievements.Add(new Achievement("100 Jumps"));
-            Achievements.Add(new Achievement("Level 1 Complete"));
-            Achievements.Add(new Achievement("Level 2 Complete"));
-            Achievements.Add(new Achievement("Level 3 Complete"));
-            Achievements.Add(new Achievement("Completed All Levels"));
+            string achievementJson = File.ReadAllText(file);
+            // print(achievementJson);
+            var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(achievementJson);
+            Achievements.Add(new Achievement(jsonDictionary["_name"], bool.Parse(jsonDictionary["_unlocked"])));
         }
         
     }

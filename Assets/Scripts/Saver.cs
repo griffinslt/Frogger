@@ -1,5 +1,6 @@
 
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class Saver : MonoBehaviour
     public static Saver Instance { get; set; }
     private static GameObject[] _gameObjects;
     private static string _folder;
+    private static string _dateTimeFolder;
     private static string _sceneName;
     
     private void Awake()
@@ -33,8 +35,10 @@ public class Saver : MonoBehaviour
             Directory.CreateDirectory(_folder);
         }
         string dateTime = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        string json = GetJson();
-        File.WriteAllText(_folder + dateTime + ".json", json);
+        _dateTimeFolder = _folder + dateTime;
+        Directory.CreateDirectory(_dateTimeFolder);
+        GetJson();
+        // File.WriteAllText(_folder + dateTime + ".json", json);
         CheckHighScore();
     }
 
@@ -58,46 +62,61 @@ public class Saver : MonoBehaviour
 
     }
 
-    private static string GetJson()
+    private static void GetJson()
     {
-        _gameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>() ;
-        string json = "{";
+        _gameObjects = FindObjectsOfType<GameObject>() ;
+        string json = ".json";
         int logCount = 0;
         int turtleCount = 0;
         int carCount = 0;
         int homeFrogCount = 0;
-        json += Achievements.ToJson();
+        string achievementsFolder = Application.dataPath + "/SaveFiles/Achievements";
+        if (!Directory.Exists(achievementsFolder))
+        {
+            Directory.CreateDirectory(achievementsFolder);
+        }
+
+        var achievements = Achievements.Get();
+        for (int i = 0; i < Achievements.Get().Count; i++)
+        {
+            string fileName = achievementsFolder + "/Achievement" + i + json;
+            File.WriteAllText(fileName, string.Empty);
+            File.WriteAllText(fileName, achievements[i].ToJson());
+        }
         foreach (var gameObjectFromArray in _gameObjects)
         {
             if (gameObjectFromArray.CompareTag("Log"))
             {
-                json += "\"Log" + logCount + "\":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/Log" + logCount + json, 
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 logCount++;
             } else if (gameObjectFromArray.CompareTag("Frog"))
             {
-                json += "\"Frog\":" + gameObjectFromArray.GetComponent<FrogMovement>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/Frog" + json,
+                gameObjectFromArray.GetComponent<FrogMovement>().ToJson());
             }
             else if (gameObjectFromArray.CompareTag("Turtle"))
             {
-                json += "\"Turtle" + turtleCount + "\":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/Turtle" + turtleCount + json,
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 turtleCount++;
             } else if (gameObjectFromArray.CompareTag("Car"))
             {
-                json += "\"Car" + carCount + "\":" + gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/Car" + carCount + json, 
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 carCount++;
             } else if (gameObjectFromArray.CompareTag("HomeFrog"))
             {
-                json += "\"HomeFrog" + homeFrogCount + "\":" + gameObjectFromArray.GetComponent<HomeFrog>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/HomeFrog" + homeFrogCount + json, 
+                    gameObjectFromArray.GetComponent<HomeFrog>().ToJson());
                 homeFrogCount++;
             }
             else if (gameObjectFromArray.name == "ScoreKeeper")
             {
-                json += "\"ScoreKeeper\":" + gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson() + ",";
+                File.WriteAllText(_dateTimeFolder + "/ScoreKeeper" + json, 
+                    gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson());
             }
         }
-
-        json = json.Remove(json.Length - 1);
-        json += "}";
-        return json;
+        
     }
 }
