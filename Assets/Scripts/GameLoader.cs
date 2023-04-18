@@ -1,27 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
-
 
 
 public class GameLoader : MonoBehaviour
 {
     public static GameLoader Instance { get; set; }
-    public JsonObject jsonFile;
-    
-
+    [SerializeField] public GameObject frog;
 
     private void Start()
     {
-        LoadFile("/Users/samuelgriffin/Documents/Uni/CSC384/Frogger/Frogger-CSC384/Assets/SaveFiles/Level1/2023-04-18-15-37-18");
+        LoadFile(FolderToLoadFrom.folderPath);
     }
 
-    private void LoadFile(string folder)
+    private void Awake()
     {
+        if (Instance != null && Instance != this) 
+        {
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        }
+    }
+
+    public void LoadFile(string folder)
+    {
+        //loop through all game objects are remove the ones that will be changed
         if (!Directory.Exists(folder))
         {
             throw new DirectoryNotFoundException();
@@ -31,21 +40,28 @@ public class GameLoader : MonoBehaviour
 
         foreach (var file in files)
         {
-            // print(file);
+            string filename = Path.GetFileNameWithoutExtension(file);
+            string fileJson = File.ReadAllText(file);
+            if (filename.Equals("Frog"))
+            {
+                var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileJson);
+                var frogX = float.Parse(jsonDictionary["CurrentPositionX"]);
+                var frogY = float.Parse(jsonDictionary["CurrentPositionY"]);
+                var furthestTraveled = int.Parse(jsonDictionary["_furthestTraveled"]);
+                var speed = float.Parse(jsonDictionary["speed"]);
+                var withLadyFrog = bool.Parse(jsonDictionary["_withLadyFrog"]);
+                var onPlatform = bool.Parse(jsonDictionary["_onPlatform"]);
+                var numberOfJumps = int.Parse(jsonDictionary["_numberOfJumps"]);
+                var position = new Vector2(frogX, frogY);
+                var frogScript = frog.GetComponent<FrogMovement>();
+                frogScript.LoadData(speed, position,  onPlatform, furthestTraveled,withLadyFrog, numberOfJumps);
+
+            }
         }
         
         
         
-        //Load Achievements
-        var achievementFiles = Directory.EnumerateFiles( "Assets/SaveFiles/Achievements" , "*.json").ToArray();
-        Achievements.Clear();
-        foreach (var file in achievementFiles)
-        {
-            string achievementJson = File.ReadAllText(file);
-            // print(achievementJson);
-            var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(achievementJson);
-            Achievements.Add(new Achievement(jsonDictionary["_name"], bool.Parse(jsonDictionary["_unlocked"])));
-        }
+        
 
         
         

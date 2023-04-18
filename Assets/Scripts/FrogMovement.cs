@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -25,13 +26,26 @@ public class FrogMovement : MonoBehaviour
     [Serializable]
     private struct FrogData
     {
-        public float DataSpeed;
+        public float speed;
         public float CurrentPositionX;
         public float CurrentPositionY;
-        public int DataFurthestTravelled;
-        public bool DataWithLadyFrog;
-        public int DataNumberOfJumps;
+        public int _furthestTraveled;
+        public bool _withLadyFrog;
+        public int _numberOfJumps;
+        public bool _onPlatform;
         //Todo figure out how score keeper and homefrog spawner can stay connected - home frog spawner can be static
+    }
+
+    public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog, int numberOfJumps)
+    {
+        this.speed = speed;
+        _currentPos = position;
+        _onPlatform = onPlatform;
+        _furthestTraveled = furthestTraveled;
+        _withLadyFrog = withLadyFrog;
+        _numberOfJumps = numberOfJumps;
+        transform.position = _currentPos;
+
     }
 
     private void Awake()
@@ -262,12 +276,13 @@ public class FrogMovement : MonoBehaviour
         {
             var data = new FrogData()
             {
-                DataSpeed = speed,
-                DataFurthestTravelled = _furthestTraveled,
-                DataWithLadyFrog = _withLadyFrog,
+                speed = speed,
+                _furthestTraveled = _furthestTraveled,
+                _withLadyFrog = _withLadyFrog,
                 CurrentPositionX = _currentPos.x,
                 CurrentPositionY = _currentPos.y,
-                DataNumberOfJumps = _numberOfJumps,
+                _numberOfJumps = _numberOfJumps,
+                _onPlatform = _onPlatform
             };
 
             return JsonUtility.ToJson(data);

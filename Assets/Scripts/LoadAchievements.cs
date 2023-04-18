@@ -19,7 +19,6 @@ public class LoadAchievements : MonoBehaviour
             newAchievement.tag = "UIAchievement";
             if (achievement.IsUnlocked())
             {
-                print(achievement.GetName() + " is unlocked");
                 var children = newAchievement.GetComponentsInChildren<Image>();
                 foreach (var child in children)
                 {
