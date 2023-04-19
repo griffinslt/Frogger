@@ -10,6 +10,9 @@ public class GameLoader : MonoBehaviour
 {
     public static GameLoader Instance { get; set; }
     [SerializeField] public GameObject frog;
+    [SerializeField] public GameObject log;
+    [SerializeField] public GameObject car;
+    [SerializeField] public GameObject turtle;
 
     private void Start()
     {
@@ -42,9 +45,11 @@ public class GameLoader : MonoBehaviour
         {
             string filename = Path.GetFileNameWithoutExtension(file);
             string fileJson = File.ReadAllText(file);
+            var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileJson);
+            //Move Frog
             if (filename.Equals("Frog"))
             {
-                var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileJson);
+                
                 var frogX = float.Parse(jsonDictionary["CurrentPositionX"]);
                 var frogY = float.Parse(jsonDictionary["CurrentPositionY"]);
                 var furthestTraveled = int.Parse(jsonDictionary["_furthestTraveled"]);
@@ -55,6 +60,19 @@ public class GameLoader : MonoBehaviour
                 var position = new Vector2(frogX, frogY);
                 var frogScript = frog.GetComponent<FrogMovement>();
                 frogScript.LoadData(speed, position,  onPlatform, furthestTraveled,withLadyFrog, numberOfJumps);
+            }
+
+            if (filename.Contains("Log"))
+            {
+                var speed = float.Parse(jsonDictionary["speed"]);
+                var ids = int.Parse(jsonDictionary["_ids"]);
+                var id = int.Parse(jsonDictionary["id"]);
+                var position = new Vector2(float.Parse(jsonDictionary["currentX"]), float.Parse(jsonDictionary["currentY"]));
+                var rotation = new Quaternion(0,0,0,0);
+                Instantiate(log, position, rotation);
+                var logScript = log.GetComponent<SlidingObjectBehaviour>();
+                logScript.Load(speed, ids, id);
+
 
             }
         }

@@ -5,8 +5,8 @@ using UnityEngine.Serialization;
 
 internal enum StartingSide
 {
-    Left = 0,
-    Right = 1,
+    Left = 1,
+    Right = 2,
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,17 +20,27 @@ public class SlidingObjectBehaviour : MonoBehaviour
         public int id;
         public float currentX;
         public float currentY;
+        public int startingSide;
     }
     [SerializeField] private float speed;
-    [SerializeField] private static int _ids = 0;
+    private static int _ids = 0;
     [SerializeField] private int id;
+    private StartingSide startingSide;
+    private Rigidbody2D rb2d;
+
+    public void Load(float speed, int ids, int id)
+    {
+        this.speed = speed;
+        _ids = ids;
+        this.id = id;
+    }
 
     private void Awake()
     {
-        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+        rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = 0f;
         id = _ids++;
-        var startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
+        startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         var velocity = rb2d.velocity;
         if (startingSide == StartingSide.Left)
         {
@@ -73,11 +83,12 @@ public class SlidingObjectBehaviour : MonoBehaviour
         var position = transform.position;
         var data = new ClassData
         {
-            speed = speed,
+            speed = rb2d.velocity.magnitude,
             _ids = _ids,
             id = id,
             currentX = position.x,
             currentY = position.y,
+            startingSide = (int) startingSide,
         };
 
         return JsonUtility.ToJson(data);

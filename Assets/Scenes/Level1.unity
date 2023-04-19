@@ -4330,6 +4330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frog: {fileID: 750302742}
+  log: {fileID: 1480093900}
+  car: {fileID: 335172696}
+  turtle: {fileID: 751069767}
 --- !u!4 &1408856737
 Transform:
   m_ObjectHideFlags: 0
