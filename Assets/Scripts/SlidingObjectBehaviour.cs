@@ -23,7 +23,7 @@ public class SlidingObjectBehaviour : MonoBehaviour
         public int startingSide;
     }
     [SerializeField] private float speed;
-    private static int _ids = 0;
+    private static int _ids;
     [SerializeField] private int id;
     private StartingSide startingSide;
     private Rigidbody2D rb2d;
@@ -33,6 +33,24 @@ public class SlidingObjectBehaviour : MonoBehaviour
         this.speed = speed;
         _ids = ids;
         this.id = id;
+    }
+
+    public void SetDirection(int side)
+    {
+        rb2d.velocity = Vector2.zero;
+        var velocity = rb2d.velocity;
+        startingSide = (StartingSide)side;
+        if (startingSide == StartingSide.Left)
+        {
+            velocity.x += speed;
+        }
+        else
+        {
+            velocity.x -= speed;
+        }
+        
+        rb2d.velocity = velocity;
+
     }
 
     private void Awake()
@@ -57,7 +75,6 @@ public class SlidingObjectBehaviour : MonoBehaviour
         {
             rb2d.velocity = Vector2.zero;
         }
-        
     }
 
     private void Update()

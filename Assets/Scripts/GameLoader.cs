@@ -65,16 +65,59 @@ public class GameLoader : MonoBehaviour
             if (filename.Contains("Log"))
             {
                 var speed = float.Parse(jsonDictionary["speed"]);
-                var ids = int.Parse(jsonDictionary["_ids"]);
-                var id = int.Parse(jsonDictionary["id"]);
-                var position = new Vector2(float.Parse(jsonDictionary["currentX"]), float.Parse(jsonDictionary["currentY"]));
-                var rotation = new Quaternion(0,0,0,0);
-                Instantiate(log, position, rotation);
-                var logScript = log.GetComponent<SlidingObjectBehaviour>();
-                logScript.Load(speed, ids, id);
-
-
+                if (speed > 0)
+                {
+                    var ids = int.Parse(jsonDictionary["_ids"]);
+                    var id = int.Parse(jsonDictionary["id"]);
+                    var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
+                        float.Parse(jsonDictionary["currentY"]));
+                    var rotation = new Quaternion(0, 0, 0, 0);
+                    Instantiate(log, position, rotation);
+                    var logScript = log.GetComponent<SlidingObjectBehaviour>();
+                    logScript.Load(speed, ids, id);
+                }
             }
+
+            if (filename.Contains("Turtle"))
+            {
+                var speed = float.Parse(jsonDictionary["speed"]);
+                if (speed > 0)
+                {
+                    var ids = int.Parse(jsonDictionary["_ids"]);
+                    var id = int.Parse(jsonDictionary["id"]);
+                    var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
+                        float.Parse(jsonDictionary["currentY"]));
+                    var rotation = new Quaternion(0, 0, 180, 0);
+                    var side = 2;
+                    Instantiate(turtle, position, rotation);
+                    var turtleScript = turtle.GetComponent<SlidingObjectBehaviour>();
+                    turtleScript.Load(speed, ids, id);
+                    // turtleScript.SetDirection(side);
+                }
+            }
+            
+            if (filename.Contains("Car"))
+            {
+                var speed = float.Parse(jsonDictionary["speed"]);
+                if (speed > 0)
+                {
+                    var ids = int.Parse(jsonDictionary["_ids"]);
+                    var id = int.Parse(jsonDictionary["id"]);
+                    var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
+                        float.Parse(jsonDictionary["currentY"]));
+                    var rotation = new Quaternion(0, 0, 180, 0);
+                    var side = int.Parse(jsonDictionary["startingSide"]);
+                    Instantiate(car, position, rotation);
+                    var carScript = car.GetComponent<SlidingObjectBehaviour>();
+                    carScript.Load(speed, ids, id);
+                    // turtleScript.SetDirection(side);
+                }
+            }
+            
+            
+
+            
+
         }
         
         
