@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 
 public class GameLoader : MonoBehaviour
@@ -13,6 +14,7 @@ public class GameLoader : MonoBehaviour
     [SerializeField] public GameObject log;
     [SerializeField] public GameObject car;
     [SerializeField] public GameObject turtle;
+    [SerializeField] public GameObject homeFrog;
 
    
 
@@ -87,16 +89,12 @@ public class GameLoader : MonoBehaviour
                     var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
                         float.Parse(jsonDictionary["currentY"]));
                     var rotation = new Quaternion(0, 0, 180, 0);
-                    var side = 2;
                     Instantiate(turtle, position, rotation);
                     var turtleScript = turtle.GetComponent<SlidingObjectBehaviour>();
                     turtleScript.Load(speed, ids, id);
-
-                    
-                    
                 }
             }
-            
+
             if (filename.Contains("Car"))
             {
                 var speed = float.Parse(jsonDictionary["speed"]);
@@ -116,14 +114,46 @@ public class GameLoader : MonoBehaviour
                     {
                         rotation = new Quaternion(0, 0, 0, 0);
                     }
-                    
-                    
+
                     Instantiate(car, position, rotation);
                     var carScript = car.GetComponent<SlidingObjectBehaviour>();
                     carScript.Load(speed, ids, id);
-                    // car.SetDirection(side);
                 }
+            } 
+            if (filename.Equals("ScoreKeeper"))
+            {
+                var scoreDictionary = JsonConvert.DeserializeObject<Dictionary<string, int>>(fileJson);
+                ScoreKeeper.Instance.Load(scoreDictionary["Score"], scoreDictionary["ScoreMultiplier"]);
             }
+
+            if (filename.Contains("HomeFrog"))
+            {
+                var homeFrogDictionary = JsonConvert.DeserializeObject<Dictionary<string, float>>(fileJson);
+                var x = homeFrogDictionary["PositionX"];
+                var y = homeFrogDictionary["PositionY"];
+                var position = new Vector2(x, y);
+                if (y > 0)
+                {
+                    var homes = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name.Contains("Home_"));
+                    foreach (var home in homes)
+                    {
+                        var homePosition = home.transform.position;
+                        int homeX = (int) homePosition.x;
+                        int homeY = (int) homePosition.y;
+                        if ( homeX == (int) x && homeY == (int) y)
+                        {
+                            var homeScript = home.GetComponent<Home>();
+                            homeScript.Visit();
+                        }
+                    }
+                    
+                    
+                    Instantiate(homeFrog, position, new Quaternion(0, 0, 0, 0));
+                }
+
+
+            }
+            
             
             
 

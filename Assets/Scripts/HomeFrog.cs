@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
 public class HomeFrog : MonoBehaviour
 {
+    public static int NumberOfHomeFrogs; 
     [Serializable]
     private struct HomeFrogData
     {
@@ -10,8 +12,13 @@ public class HomeFrog : MonoBehaviour
         public float PositionY;
         //Todo figure out how score keeper and homefrog spawner can stay connected - home frog spawner can be static
     }
-    
-    
+
+    private void Awake()
+    {
+        NumberOfHomeFrogs++;
+    }
+
+
     public string ToJson()
     {
         var position = transform.position;

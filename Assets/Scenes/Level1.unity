@@ -926,7 +926,7 @@ GameObject:
   - component: {fileID: 211493780}
   - component: {fileID: 211493779}
   m_Layer: 6
-  m_Name: Home (1)
+  m_Name: Home_(1)
   m_TagString: Home
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2558,8 +2558,6 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  scoreKeeper: {fileID: 448827103}
-  homeFrogSpawner: {fileID: 1972866816}
 --- !u!212 &750302744
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3669,7 +3667,7 @@ GameObject:
   - component: {fileID: 1122144887}
   - component: {fileID: 1122144886}
   m_Layer: 6
-  m_Name: Home (3)
+  m_Name: Home_(3)
   m_TagString: Home
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4333,6 +4331,7 @@ MonoBehaviour:
   log: {fileID: 1480093900}
   car: {fileID: 335172696}
   turtle: {fileID: 751069767}
+  homeFrog: {fileID: 1848253956}
 --- !u!4 &1408856737
 Transform:
   m_ObjectHideFlags: 0
@@ -4580,7 +4579,7 @@ GameObject:
   - component: {fileID: 1517476167}
   - component: {fileID: 1517476166}
   m_Layer: 6
-  m_Name: Home (2)
+  m_Name: Home_(2)
   m_TagString: Home
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5682,7 +5681,7 @@ GameObject:
   - component: {fileID: 1829794558}
   - component: {fileID: 1829794561}
   m_Layer: 6
-  m_Name: Home
+  m_Name: Home_
   m_TagString: Home
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,8 +17,8 @@ public class FrogMovement : MonoBehaviour
     private Vector2 _currentPos;
     private bool _onPlatform;
     private int _furthestTraveled;
-    public ScoreKeeper scoreKeeper;
-    public HomeFrogSpawner homeFrogSpawner;
+    // public ScoreKeeper scoreKeeper;
+    // public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
     private int _numberOfJumps;
 
@@ -69,7 +69,7 @@ public class FrogMovement : MonoBehaviour
         if (_furthestTraveled < _currentPos.y)
         {
             _furthestTraveled = (int) _currentPos.y;
-            scoreKeeper.AddScore(10);
+            ScoreKeeper.Instance.AddScore(10);
         }
         
     }
@@ -190,13 +190,13 @@ public class FrogMovement : MonoBehaviour
             if (_withLadyFrog && !home.HasBeenVisitedWithLady())
             {
                 home.VisitWithLady();
-                scoreKeeper.AddScore(200);
+                ScoreKeeper.Instance.AddScore(200);
                 _withLadyFrog = false;
             }
             else if (!home.HasBeenVisited())
             {
-                homeFrogSpawner.SpawnHomeFrog(collision.transform);
-                scoreKeeper.AddScore(50);
+                HomeFrogSpawner.Instance.SpawnHomeFrog(collision.transform);
+                ScoreKeeper.Instance.AddScore(50);
             }
             home.Visit();
         }
