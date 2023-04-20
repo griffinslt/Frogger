@@ -14,10 +14,7 @@ public class GameLoader : MonoBehaviour
     [SerializeField] public GameObject car;
     [SerializeField] public GameObject turtle;
 
-    private void Start()
-    {
-        LoadFile(FolderToLoadFrom.folderPath);
-    }
+   
 
     private void Awake()
     {
@@ -29,6 +26,7 @@ public class GameLoader : MonoBehaviour
         { 
             Instance = this; 
         }
+        LoadFile(FolderToLoadFrom.folderPath);
     }
 
     public void LoadFile(string folder)
@@ -40,8 +38,9 @@ public class GameLoader : MonoBehaviour
         }
         
         var files = Directory.EnumerateFiles( folder, "*.json").ToArray();
+        var enumerable = files.Reverse();
 
-        foreach (var file in files)
+        foreach (var file in enumerable)
         {
             string filename = Path.GetFileNameWithoutExtension(file);
             string fileJson = File.ReadAllText(file);
@@ -92,7 +91,9 @@ public class GameLoader : MonoBehaviour
                     Instantiate(turtle, position, rotation);
                     var turtleScript = turtle.GetComponent<SlidingObjectBehaviour>();
                     turtleScript.Load(speed, ids, id);
-                    // turtleScript.SetDirection(side);
+
+                    
+                    
                 }
             }
             
@@ -105,12 +106,22 @@ public class GameLoader : MonoBehaviour
                     var id = int.Parse(jsonDictionary["id"]);
                     var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
                         float.Parse(jsonDictionary["currentY"]));
-                    var rotation = new Quaternion(0, 0, 180, 0);
                     var side = int.Parse(jsonDictionary["startingSide"]);
+                    Quaternion rotation;
+                    if (side == 2)
+                    {
+                        rotation = new Quaternion(0, 0, 180, 0);
+                    }
+                    else
+                    {
+                        rotation = new Quaternion(0, 0, 0, 0);
+                    }
+                    
+                    
                     Instantiate(car, position, rotation);
                     var carScript = car.GetComponent<SlidingObjectBehaviour>();
                     carScript.Load(speed, ids, id);
-                    // turtleScript.SetDirection(side);
+                    // car.SetDirection(side);
                 }
             }
             

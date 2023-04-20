@@ -31,13 +31,12 @@ public class SlidingObjectBehaviour : MonoBehaviour
     public void Load(float speed, int ids, int id)
     {
         this.speed = speed;
-        _ids = ids;
         this.id = id;
     }
 
     public void SetDirection(int side)
     {
-        rb2d.velocity = Vector2.zero;
+        rb2d.velocity = new Vector2(0,0);
         var velocity = rb2d.velocity;
         startingSide = (StartingSide)side;
         if (startingSide == StartingSide.Left)
@@ -55,12 +54,12 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
         rb2d.gravityScale = 0f;
         id = _ids++;
         startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         var velocity = rb2d.velocity;
-        if (startingSide == StartingSide.Left)
+        if (startingSide == StartingSide.Left && !gameObject.name.Contains("Turtle") || transform.rotation.z == 0)
         {
             velocity.x += speed;
         }
