@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -63,6 +64,20 @@ public class FrogMovement : MonoBehaviour
         }
         
     }
+
+    private void LateUpdate()
+    {
+        List<Collider2D> collider2Ds = new List<Collider2D>();
+        Physics2D.OverlapPoint(_currentPos, filter, collider2Ds);
+        foreach (var collision in collider2Ds)
+        {
+            if (!_onPlatform)
+            {
+                CheckRiverCollision(collision);
+            }
+        }
+    }
+    
 
     private void NumOfForwardJumpsCheck()
     {
@@ -129,6 +144,7 @@ public class FrogMovement : MonoBehaviour
             JumpAchievementCheck();
         }
         
+        
     }
 
     private void JumpAchievementCheck()
@@ -167,10 +183,10 @@ public class FrogMovement : MonoBehaviour
             CheckCarCollision(collision);
             CheckLogCollision(collision);
             CheckTurtleCollision(collision);
-            if (!_onPlatform)
-            {
-                CheckRiverCollision(collision);
-            }
+            // if (!_onPlatform)
+            // {
+            //     CheckRiverCollision(collision);
+            // }
            
 
 
@@ -212,6 +228,17 @@ public class FrogMovement : MonoBehaviour
             transform.position = collision.transform.position;
         }
     }
+    private void CheckLogCollision(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Log"))
+        {
+            print("on log");
+            _onPlatform = true;
+            _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
+
+        }
+    }
+
 
     // private void OnTriggerEnter2D(Collider2D collision)
         // {
@@ -225,31 +252,18 @@ public class FrogMovement : MonoBehaviour
 
         private void CheckRiverCollision(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("River") && !_onPlatform)
-            {
-                
-                //print("in the river");
-            }
-            
-        }
-
-        private void CheckLogCollision(Collider2D collision)
-        {
-            if (collision.gameObject.CompareTag("Log"))
-            {
-                //print("on log");
-                _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-                _onPlatform = true;
-            }
+            if (!collision.gameObject.CompareTag("River") || _onPlatform) return;
+            _rb2D.velocity = Vector2.zero;
+            transform.position = new Vector2(0, 0);
 
         }
 
+        
         private void CheckCarCollision(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Car"))
             {
-                //print("hit by car");
-
+                transform.position = new Vector2(0, 0);
             }
 
         }
@@ -264,12 +278,17 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.CompareTag("Log") || collision.CompareTag("Turtle"))
             {
-                _rb2D.velocity = new Vector2(0, 0);
-                _onPlatform = false;
-                transform.position = RoundPosition(transform.position);
+                OffPlatform();
             }
            
             onTriggerChange?.Invoke(false);
+        }
+
+        private void OffPlatform()
+        {
+            _rb2D.velocity = new Vector2(0, 0);
+            _onPlatform = false;
+            transform.position = RoundPosition(transform.position);
         }
 
         public string ToJson()
