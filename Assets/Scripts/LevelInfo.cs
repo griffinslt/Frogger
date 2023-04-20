@@ -13,7 +13,7 @@ public class LevelInfo : MonoBehaviour
         public int CurrentTime;
     }
 
-    private void Start()
+    private void Awake()
     {
         if (Instance != null && Instance != this) 
         { 
@@ -24,6 +24,11 @@ public class LevelInfo : MonoBehaviour
             Instance = this; 
         }
 
+    }
+
+    public static void Load(int timeForLevel, int currentTime)
+    {
+        _timeForLevel = timeForLevel - currentTime;
     }
 
     public static int GetTime()

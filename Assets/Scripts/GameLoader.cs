@@ -150,8 +150,12 @@ public class GameLoader : MonoBehaviour
                     
                     Instantiate(homeFrog, position, new Quaternion(0, 0, 0, 0));
                 }
+            }
 
-
+            if (filename.Equals("LevelInfo"))
+            {
+                var levelDictionary = JsonConvert.DeserializeObject<Dictionary<string, int>>(fileJson);
+                LevelInfo.Load(levelDictionary["DataTimeForLevel"], levelDictionary["CurrentTime"]);
             }
             
             
