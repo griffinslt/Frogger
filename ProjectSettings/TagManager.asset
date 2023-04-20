@@ -17,6 +17,10 @@ TagManager:
   - LockedImage
   - UnlockedImage
   - UIAchievement
+  - LeftBarrier
+  - RightBarrier
+  - UpBarrier
+  - DownBarrier
   layers:
   - Default
   - TransparentFX
@@ -27,7 +31,7 @@ TagManager:
   - Walkable
   - Frog
   - Car
-  - 
+  - Barriers
   - 
   - 
   - 

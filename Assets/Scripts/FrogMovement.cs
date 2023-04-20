@@ -18,8 +18,6 @@ public class FrogMovement : MonoBehaviour
     private Vector2 _currentPos;
     private bool _onPlatform;
     private int _furthestTraveled;
-    // public ScoreKeeper scoreKeeper;
-    // public HomeFrogSpawner homeFrogSpawner;
     private bool _withLadyFrog;
     private int _numberOfJumps;
 
@@ -34,7 +32,6 @@ public class FrogMovement : MonoBehaviour
         public bool _withLadyFrog;
         public int _numberOfJumps;
         public bool _onPlatform;
-        //Todo figure out how score keeper and homefrog spawner can stay connected - home frog spawner can be static
     }
 
     public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog, int numberOfJumps)
@@ -75,6 +72,8 @@ public class FrogMovement : MonoBehaviour
             {
                 CheckRiverCollision(collision);
             }
+
+            CheckBorderCollision(collision);
         }
     }
     
@@ -183,14 +182,6 @@ public class FrogMovement : MonoBehaviour
             CheckCarCollision(collision);
             CheckLogCollision(collision);
             CheckTurtleCollision(collision);
-            // if (!_onPlatform)
-            // {
-            //     CheckRiverCollision(collision);
-            // }
-           
-
-
-
         }
 
     }
@@ -199,10 +190,7 @@ public class FrogMovement : MonoBehaviour
     {
         if (collision.CompareTag("Home"))
         {
-            
             Home home = collision.GetComponent<Home>();
-            
-
             if (_withLadyFrog && !home.HasBeenVisitedWithLady())
             {
                 home.VisitWithLady();
@@ -215,6 +203,7 @@ public class FrogMovement : MonoBehaviour
                 ScoreKeeper.Instance.AddScore(50);
             }
             home.Visit();
+            transform.position = Vector2.zero;
         }
     }
 
@@ -222,7 +211,6 @@ public class FrogMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Turtle"))
         {
-            //print("on turtle");
             _rb2D.velocity = collision.GetComponent<Rigidbody2D>().velocity;
             _onPlatform = true;
             transform.position = collision.transform.position;
@@ -239,18 +227,7 @@ public class FrogMovement : MonoBehaviour
         }
     }
 
-
-    // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     CheckCarCollision(collision);
-        //     CheckLogCollision(collision);
-        //     CheckRiverCollision(collision);
-        //     onTriggerChange?.Invoke(true);
-        //
-        //     
-        // }
-
-        private void CheckRiverCollision(Collider2D collision)
+    private void CheckRiverCollision(Collider2D collision)
         {
             if (!collision.gameObject.CompareTag("River") || _onPlatform) return;
             _rb2D.velocity = Vector2.zero;
@@ -264,6 +241,32 @@ public class FrogMovement : MonoBehaviour
             if (collision.gameObject.CompareTag("Car"))
             {
                 transform.position = new Vector2(0, 0);
+            }
+
+        }
+        
+        private void CheckBorderCollision(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("LeftBarrier"))
+            {
+                print("left");
+                transform.position = new Vector2(_currentPos.x+1, _currentPos.y);
+                _rb2D.velocity = Vector2.zero;
+            }
+
+            if (collision.gameObject.CompareTag("RightBarrier"))
+            {
+                transform.position = new Vector2(_currentPos.x-1, _currentPos.y);
+                _rb2D.velocity = Vector2.zero;
+            }
+
+            if (collision.gameObject.CompareTag("UpBarrier"))
+            { 
+                transform.position = new Vector2(_currentPos.x, _currentPos.y -1);
+            }
+            if (collision.gameObject.CompareTag("DownBarrier"))
+            {
+                transform.position = new Vector2(_currentPos.x, _currentPos.y + 1);
             }
 
         }
