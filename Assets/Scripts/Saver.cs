@@ -27,9 +27,9 @@ public class Saver : MonoBehaviour
         _folder = Application.dataPath + "/SaveFiles/" +  SceneManager.GetActiveScene().name + "/"; 
         
     }
-
-    public static void Save()
+    public void Save()
     {
+        print("Saving");
         if (!Directory.Exists(_folder))
         {
             Directory.CreateDirectory(_folder);
@@ -116,6 +116,12 @@ public class Saver : MonoBehaviour
                 File.WriteAllText(_dateTimeFolder + "/ScoreKeeper" + json, 
                     gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson());
             }
+            else if(gameObjectFromArray.CompareTag("LevelInfo"))
+            {
+                File.WriteAllText(_dateTimeFolder + "/LevelInfo" + json, 
+                    gameObjectFromArray.GetComponent<LevelInfo>().ToJson());
+            }
+            
         }
         
     }

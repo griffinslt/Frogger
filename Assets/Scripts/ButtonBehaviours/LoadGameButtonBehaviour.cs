@@ -56,7 +56,7 @@ namespace ButtonBehaviours
         {
             level = 1;
             ClearButtons();
-            _files = Directory.EnumerateFiles(_folder + "Level1", "*.json").ToArray();
+            _files = Directory.GetDirectories(_folder + "Level1").ToArray();
             Array.Reverse(_files);
             //loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
             for (int i = 0; i < _files.Length; i++)
@@ -102,11 +102,7 @@ namespace ButtonBehaviours
                     break;
             }
             string chosenFile = _files[buttonIndex];
-            //this should actually be the chosen game folder
-            // GameLoader gameLoader = gameObject.AddComponent<GameLoader>();
-            // GameLoader.Instance.LoadFile("/Users/samuelgriffin/Documents/Uni/CSC384/Frogger/Frogger-CSC384/Assets/SaveFiles/Level1/2023-04-18-20-08-18");
-            FolderToLoadFrom.folderPath =
-                "/Users/samuelgriffin/Documents/Uni/CSC384/Frogger/Frogger-CSC384/Assets/SaveFiles/Level1/2023-04-20-12-01-49";
+            FolderToLoadFrom.folderPath = chosenFile;
         }
     
     }

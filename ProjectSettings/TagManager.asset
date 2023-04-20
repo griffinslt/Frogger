@@ -21,6 +21,7 @@ TagManager:
   - RightBarrier
   - UpBarrier
   - DownBarrier
+  - LevelInfo
   layers:
   - Default
   - TransparentFX

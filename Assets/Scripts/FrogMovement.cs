@@ -220,7 +220,6 @@ public class FrogMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Log"))
         {
-            print("on log");
             _onPlatform = true;
             _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
 
@@ -249,7 +248,6 @@ public class FrogMovement : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("LeftBarrier"))
             {
-                print("left");
                 transform.position = new Vector2(_currentPos.x+1, _currentPos.y);
                 _rb2D.velocity = Vector2.zero;
             }
