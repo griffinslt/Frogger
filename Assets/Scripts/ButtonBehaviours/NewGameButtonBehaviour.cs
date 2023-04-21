@@ -10,8 +10,10 @@ namespace ButtonBehaviours
             FolderToLoadFrom.folderPath = "Assets/SaveFiles/Base";
             SlidingObjectBehaviour._ids = 0;
             HomeFrog.NumberOfHomeFrogs = 0;
-            SceneManager.LoadScene("Level1");
+            TransitionLoader.Instance.LoadTransition(1);
+            //SceneManager.LoadScene("Level1");
             Time.timeScale = 1;
         }
+        
     }
 }

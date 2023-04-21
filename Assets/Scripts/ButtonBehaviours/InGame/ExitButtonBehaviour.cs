@@ -7,7 +7,8 @@ namespace ButtonBehaviours.InGame
     {
         public void OnButtonPress()
         {
-            SceneManager.LoadScene("Menu");
+            // SceneManager.LoadScene("Menu");
+            TransitionLoader.Instance.LoadTransition(0);
         }
     }
 }

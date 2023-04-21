@@ -15,6 +15,7 @@ public class LevelInfo : MonoBehaviour
     [SerializeField] private GameObject winMenu;
     [SerializeField] private GameObject gameMenu;
     [SerializeField] private GameObject loseMenu;
+    [SerializeField] private GameObject frog;
 
     private struct LevelInfoData
     {
@@ -59,6 +60,7 @@ public class LevelInfo : MonoBehaviour
                 File.WriteAllText(filename, (currentLevel + 1).ToString());
             }
         }
+        frog.GetComponent<FrogMovement>().DidFrogDie();
     }
 
     public void Lose()

@@ -113,13 +113,16 @@ namespace ButtonBehaviours
             switch (level)
             {
                 case 1:
-                    SceneManager.LoadScene("Level1");
+                    // SceneManager.LoadScene("Level1");
+                    TransitionLoader.Instance.LoadTransition(1);
                     break;
                 case 2:
                     // SceneManager.LoadScene("Level2");
+                    // TransitionLoader.Instance.LoadTransition(2);
                     break;
                 case 3:
                     // SceneManager.LoadScene("Level3");
+                    // TransitionLoader.Instance.LoadTransition(3);
                     break;
             }
             string chosenFile = _files[buttonIndex];

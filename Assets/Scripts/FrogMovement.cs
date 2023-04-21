@@ -4,6 +4,7 @@ using Commands;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 
@@ -79,6 +80,23 @@ public class FrogMovement : MonoBehaviour, IEntity
 
             CheckBorderCollision(collision);
         }
+    }
+
+    public void DidFrogDie()
+    {
+        if (_died) return;
+        var level = "error";
+        if (SceneManager.GetActiveScene().name == "Level1")
+        {
+            level = "Level 1";
+        } else if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            level = "Level 2";
+        } else if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            level = "Level 3";
+        }
+        achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName(level + " Complete No Death"));
     }
     
 
