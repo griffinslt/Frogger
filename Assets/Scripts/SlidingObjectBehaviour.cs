@@ -60,8 +60,6 @@ public class SlidingObjectBehaviour : MonoBehaviour
             rb2d.velocity = Vector2.zero;
         }
 
-        print(id);
-
     }
 
     private void Update()

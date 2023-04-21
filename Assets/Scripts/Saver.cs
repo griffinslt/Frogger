@@ -1,9 +1,11 @@
 
+using System;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using PlayerProfile;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 
@@ -14,7 +16,13 @@ public class Saver : MonoBehaviour
     private static string _folder;
     private static string _dateTimeFolder;
     private static string _sceneName;
-    
+
+    private void Start()
+    {
+        InvokeRepeating(nameof(SaveStateForRollBack), 5, 10);
+        //when game ends clear this file so it is only ever the current game that is stored there
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) 
@@ -26,9 +34,12 @@ public class Saver : MonoBehaviour
             Instance = this; 
         }
         _sceneName = SceneManager.GetActiveScene().name;
-        _folder = Application.dataPath + "/SaveFiles/" + "Player"+ PlayerSelector.SelectedPlayer + "/" + SceneManager.GetActiveScene().name + "/"; 
-        
+        _folder = Application.dataPath + "/SaveFiles/" + "Player"+ PlayerSelector.SelectedPlayer + "/" + SceneManager.GetActiveScene().name + "/";
     }
+
+   
+
+
     public void Save()
     {
         print("Saving");
@@ -126,5 +137,76 @@ public class Saver : MonoBehaviour
             
         }
         
+    }
+    
+    public void SaveStateForRollBack()
+    {
+        string dateTime = System.DateTime.Now.ToString("HH-mm-ss");
+        const string currentGameFolder = "Assets/SaveFiles/CurrentGame/";
+        string folderForRollback = currentGameFolder + dateTime;
+        if (!Directory.Exists(folderForRollback))
+        {
+            Directory.CreateDirectory(folderForRollback);
+        }
+        
+        _gameObjects = FindObjectsOfType<GameObject>() ;
+        string json = ".json";
+        int logCount = 0;
+        int turtleCount = 0;
+        int carCount = 0;
+        int homeFrogCount = 0;
+        string achievementsFolder = folderForRollback + "/Achievements";
+        if (!Directory.Exists(achievementsFolder))
+        {
+            Directory.CreateDirectory(achievementsFolder);
+        }
+
+        var achievements = Achievements.Get();
+        for (int i = 0; i < Achievements.Get().Count; i++)
+        {
+            string fileName = achievementsFolder + "/Achievement" + i + json;
+            File.WriteAllText(fileName, string.Empty);
+            File.WriteAllText(fileName, achievements[i].ToJson());
+        }
+        foreach (var gameObjectFromArray in _gameObjects)
+        {
+            if (gameObjectFromArray.CompareTag("Log"))
+            {
+                File.WriteAllText(folderForRollback + "/Log" + logCount + json, 
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
+                logCount++;
+            } else if (gameObjectFromArray.CompareTag("Frog"))
+            {
+                File.WriteAllText(folderForRollback + "/Frog" + json,
+                gameObjectFromArray.GetComponent<FrogMovement>().ToJson());
+            }
+            else if (gameObjectFromArray.CompareTag("Turtle"))
+            {
+                File.WriteAllText(folderForRollback + "/Turtle" + turtleCount + json,
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
+                turtleCount++;
+            } else if (gameObjectFromArray.CompareTag("Car"))
+            {
+                File.WriteAllText(folderForRollback + "/Car" + carCount + json, 
+                    gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
+                carCount++;
+            } else if (gameObjectFromArray.CompareTag("HomeFrog"))
+            {
+                File.WriteAllText(folderForRollback + "/HomeFrog" + homeFrogCount + json, 
+                    gameObjectFromArray.GetComponent<HomeFrog>().ToJson());
+                homeFrogCount++;
+            }
+            else if (gameObjectFromArray.name == "ScoreKeeper")
+            {
+                File.WriteAllText(folderForRollback + "/ScoreKeeper" + json, 
+                    gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson());
+            }
+            else if(gameObjectFromArray.CompareTag("LevelInfo"))
+            {
+                File.WriteAllText(folderForRollback + "/LevelInfo" + json, 
+                    gameObjectFromArray.GetComponent<LevelInfo>().ToJson());
+            }
+            
+        }
     }
 }

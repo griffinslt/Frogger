@@ -9,6 +9,7 @@ public class TransitionLoader : MonoBehaviour
     public static TransitionLoader Instance { get; set; }
     public Animator transition;
     public float transitionTime = 1f;
+    private static readonly int Start = Animator.StringToHash("Start");
 
     private void Awake()
     {
@@ -29,7 +30,8 @@ public class TransitionLoader : MonoBehaviour
 
     IEnumerator PlayAnimation(int indexOfLevel)
     {
-        transition.SetTrigger("Start");
+        Time.timeScale = 1;
+        transition.SetTrigger(Start);
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(indexOfLevel);
 
