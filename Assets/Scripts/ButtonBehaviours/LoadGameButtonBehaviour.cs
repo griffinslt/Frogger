@@ -74,12 +74,32 @@ namespace ButtonBehaviours
         {
             level = 2;
             ClearButtons();
+            _files = Directory.GetDirectories(_folder + "Level2").ToArray();
+            Array.Reverse(_files);
+            for (int i = 0; i < _files.Length; i++)
+            {
+                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
+                if (i == loadButtons.Length-1)
+                {
+                    break;
+                }
+            }
         }
         
         public void LoadLevel3()
         {
             level = 3;
             ClearButtons();
+            _files = Directory.GetDirectories(_folder + "Level3").ToArray();
+            Array.Reverse(_files);
+            for (int i = 0; i < _files.Length; i++)
+            {
+                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
+                if (i == loadButtons.Length-1)
+                {
+                    break;
+                }
+            }
         }
 
         public void LoadSelectedLevel(GameObject button)
@@ -104,6 +124,11 @@ namespace ButtonBehaviours
             }
             string chosenFile = _files[buttonIndex];
             FolderToLoadFrom.folderPath = chosenFile;
+        }
+
+        public void LoadNewForLevel()
+        {
+            
         }
     
     }

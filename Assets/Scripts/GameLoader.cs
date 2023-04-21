@@ -16,7 +16,7 @@ public class GameLoader : MonoBehaviour
     [SerializeField] public GameObject turtle;
     [SerializeField] public GameObject homeFrog;
 
-   
+    
 
     private void Awake()
     {
@@ -28,7 +28,9 @@ public class GameLoader : MonoBehaviour
         { 
             Instance = this; 
         }
+        SlidingObjectBehaviour._ids = 0;
         LoadFile(FolderToLoadFrom.folderPath);
+        SlidingObjectBehaviour._ids = 0;
     }
 
     public void LoadFile(string folder)
@@ -44,6 +46,7 @@ public class GameLoader : MonoBehaviour
 
         foreach (var file in enumerable)
         {
+            SlidingObjectBehaviour._ids = 3;
             string filename = Path.GetFileNameWithoutExtension(file);
             string fileJson = File.ReadAllText(file);
             var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileJson);
@@ -165,31 +168,8 @@ public class GameLoader : MonoBehaviour
                 LevelInfo.Load(levelDictionary["DataTimeForLevel"], levelDictionary["CurrentTime"]);
                 Time.timeScale = 1;
             }
-            
-            
-            
-
-            
-
+            SlidingObjectBehaviour._ids = 0;   
         }
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-;
-
-
-
-
-
-
 
     }
 }

@@ -7,6 +7,9 @@ namespace ButtonBehaviours
     {
         public void OnButtonPress()
         {
+            FolderToLoadFrom.folderPath = "Assets/SaveFiles/Base";
+            SlidingObjectBehaviour._ids = 0;
+            HomeFrog.NumberOfHomeFrogs = 0;
             SceneManager.LoadScene("Level1");
             Time.timeScale = 1;
         }

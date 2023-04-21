@@ -20,7 +20,6 @@ public class Bar : MonoBehaviour
     private void GameOver()
     {
         Time.timeScale = 0;
-        //Would not actually save
-        Saver.Instance.Save();
+        LevelInfo.Instance.Lose();
     }
 }

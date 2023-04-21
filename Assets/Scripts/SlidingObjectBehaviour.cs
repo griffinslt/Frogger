@@ -23,7 +23,7 @@ public class SlidingObjectBehaviour : MonoBehaviour
         public int startingSide;
     }
     [SerializeField] private float speed;
-    private static int _ids;
+    public static int _ids;
     [SerializeField] private int id;
     private StartingSide startingSide;
     private Rigidbody2D rb2d;
@@ -34,29 +34,14 @@ public class SlidingObjectBehaviour : MonoBehaviour
         this.id = id;
     }
 
-    public void SetDirection(int side)
-    {
-        rb2d.velocity = new Vector2(0,0);
-        var velocity = rb2d.velocity;
-        startingSide = (StartingSide)side;
-        if (startingSide == StartingSide.Left)
-        {
-            velocity.x += speed;
-        }
-        else
-        {
-            velocity.x -= speed;
-        }
-        
-        rb2d.velocity = velocity;
-
-    }
+    
 
     private void Awake()
     {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         rb2d.gravityScale = 0f;
-        id = _ids++;
+        id = _ids;
+        _ids++;
         startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         var velocity = rb2d.velocity;
         if (startingSide == StartingSide.Left && !gameObject.name.Contains("Turtle") || transform.rotation.z == 0)
@@ -74,6 +59,9 @@ public class SlidingObjectBehaviour : MonoBehaviour
         {
             rb2d.velocity = Vector2.zero;
         }
+
+        print(id);
+
     }
 
     private void Update()
