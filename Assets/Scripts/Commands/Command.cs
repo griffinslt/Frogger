@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Command
+namespace Commands
 {
-    protected IEntity _entity;
-
-    public Command(IEntity e)
+    public abstract class Command
     {
-        _entity = e;
-        
-    }
+        protected IEntity Entity;
 
-    public abstract void Execute();
+        public Command(IEntity e)
+        {
+            Entity = e;
+        
+        }
+
+        public abstract Vector2 Execute();
     
+    }
 }

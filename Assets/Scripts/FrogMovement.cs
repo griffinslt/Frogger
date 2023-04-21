@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Commands;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +8,7 @@ using UnityEngine.Serialization;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class FrogMovement : MonoBehaviour
+public class FrogMovement : MonoBehaviour, IEntity
 {
 
     public UnityEvent<bool> onTriggerChange;
@@ -111,32 +112,35 @@ public class FrogMovement : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.W)) 
         {
-            transform1.eulerAngles = new Vector3(0,0,0);
-            transform1.position = _currentPos + new Vector2(0,speed);
-            movement += new Vector2(0,speed);
+            // transform1.eulerAngles = new Vector3(0,0,0);
+            // // transform1.position = _currentPos + new Vector2(0,speed);
+            // movement += new Vector2(0,speed);
+            Command upCommand = new ForwardCommand(this, speed);
+            movement = upCommand.Execute();
             NumOfForwardJumpsCheck();
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
             transform1.eulerAngles = new Vector3(0,0,180);
-            transform1.position = _currentPos + new Vector2(0,-speed);
+            // transform1.position = _currentPos + new Vector2(0,-speed);
             movement += new Vector2(0,-speed);
         } 
         if (Input.GetKeyDown(KeyCode.D)) 
         {
             transform1.eulerAngles = new Vector3(0,0,-90);
-            transform1.position = _currentPos + new Vector2(speed,0);
+            // transform1.position = _currentPos + new Vector2(speed,0);
             movement += new Vector2(speed, 0);
         } 
         if (Input.GetKeyDown(KeyCode.A)) 
         {
             transform1.eulerAngles = new Vector3(0,0,90);            
-            transform1.position = _currentPos + new Vector2(-speed,0);
+            // transform1.position = _currentPos + new Vector2(-speed,0);
             movement += new Vector2(-speed, 0);
             
         }
 
         _currentPos += movement;
+        transform.position = _currentPos;
         if (movement.magnitude > 0)
         {
             _numberOfJumps++;

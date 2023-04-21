@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+namespace Commands
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ForwardCommand : MoveCommand
     {
-        
-    }
+        public ForwardCommand(IEntity e, float speed) : base(e, speed)
+        {
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override Vector2 Execute()
+        {
+            //set orientation
+            entityTransform.eulerAngles = Vector3.zero;
+            //set movement
+            movement += new Vector2(0, _speed);
+            return movement;
+        }
     }
 }

@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RightCommand : MonoBehaviour
+namespace Commands
 {
-    // Start is called before the first frame update
-    void Start()
+    public class RightCommand : MoveCommand
     {
-        
-    }
+        public RightCommand(IEntity e, float speed) : base(e, speed)
+        {
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override Vector2 Execute()
+        {
+            return Vector2.zero;
+
+        }
     }
 }
