@@ -110,20 +110,20 @@ public class FrogMovement : MonoBehaviour, IEntity
         
         
         
-        if (Input.GetKeyDown(KeyCode.W)) 
+        if (InputHandler.ForwardButtonPressed()) 
         {
             movement += new ForwardCommand(this, speed).Execute();
             NumOfForwardJumpsCheck();
         } 
-        if (Input.GetKeyDown(KeyCode.S)) 
+        if (InputHandler.BackwardButtonPressed()) 
         {
             movement += new BackCommand(this,speed).Execute();
         } 
-        if (Input.GetKeyDown(KeyCode.D)) 
+        if (InputHandler.RightButtonPressed()) 
         {
             movement += new RightCommand(this, speed).Execute();
         } 
-        if (Input.GetKeyDown(KeyCode.A)) 
+        if (InputHandler.LeftButtonPressed()) 
         {
             movement += new LeftCommand(this, speed).Execute();
             
