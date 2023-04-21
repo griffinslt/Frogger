@@ -21,6 +21,7 @@ public class FrogMovement : MonoBehaviour, IEntity
     private int _furthestTraveled;
     private bool _withLadyFrog;
     private int _numberOfJumps;
+    private bool _died;
 
 
     [Serializable]
@@ -33,9 +34,10 @@ public class FrogMovement : MonoBehaviour, IEntity
         public bool _withLadyFrog;
         public int _numberOfJumps;
         public bool _onPlatform;
+        public bool _died;
     }
 
-    public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog, int numberOfJumps)
+    public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog, int numberOfJumps, bool died)
     {
         this.speed = speed;
         _currentPos = position;
@@ -44,6 +46,7 @@ public class FrogMovement : MonoBehaviour, IEntity
         _withLadyFrog = withLadyFrog;
         _numberOfJumps = numberOfJumps;
         transform.position = _currentPos;
+        _died = died;
 
     }
 
@@ -146,15 +149,15 @@ public class FrogMovement : MonoBehaviour, IEntity
         {
             switch (_numberOfJumps)
             {
-                case 10:
-                    var achievement = Achievements.FindAchievementByName("10 Jumps");
+                case 100:
+                    var achievement = Achievements.FindAchievementByName("100 Jumps");
                     achievementManager.NotifyAchievementComplete(achievement);
                     break;
-                case 50:
-                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("50 Jumps"));
+                case 250:
+                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("250 Jumps"));
                     break;
-                case 100:
-                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("100 Jumps"));
+                case 500:
+                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("500 Jumps"));
                     break;
             }
         }
@@ -225,6 +228,7 @@ public class FrogMovement : MonoBehaviour, IEntity
             if (!collision.gameObject.CompareTag("River") || _onPlatform) return;
             _rb2D.velocity = Vector2.zero;
             transform.position = new Vector2(0, 0);
+            _died = true;
 
         }
 
@@ -296,7 +300,8 @@ public class FrogMovement : MonoBehaviour, IEntity
                 CurrentPositionX = _currentPos.x,
                 CurrentPositionY = _currentPos.y,
                 _numberOfJumps = _numberOfJumps,
-                _onPlatform = _onPlatform
+                _onPlatform = _onPlatform,
+                _died = _died,
             };
 
             return JsonUtility.ToJson(data);

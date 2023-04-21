@@ -50,17 +50,24 @@ public class GameLoader : MonoBehaviour
             //Move Frog
             if (filename.Equals("Frog"))
             {
-                
-                var frogX = float.Parse(jsonDictionary["CurrentPositionX"]);
-                var frogY = float.Parse(jsonDictionary["CurrentPositionY"]);
-                var furthestTraveled = int.Parse(jsonDictionary["_furthestTraveled"]);
-                var speed = float.Parse(jsonDictionary["speed"]);
-                var withLadyFrog = bool.Parse(jsonDictionary["_withLadyFrog"]);
-                var onPlatform = bool.Parse(jsonDictionary["_onPlatform"]);
-                var numberOfJumps = int.Parse(jsonDictionary["_numberOfJumps"]);
-                var position = new Vector2(frogX, frogY);
-                var frogScript = frog.GetComponent<FrogMovement>();
-                frogScript.LoadData(speed, position,  onPlatform, furthestTraveled,withLadyFrog, numberOfJumps);
+                try
+                {
+                    var frogX = float.Parse(jsonDictionary["CurrentPositionX"]);
+                    var frogY = float.Parse(jsonDictionary["CurrentPositionY"]);
+                    var furthestTraveled = int.Parse(jsonDictionary["_furthestTraveled"]);
+                    var speed = float.Parse(jsonDictionary["speed"]);
+                    var withLadyFrog = bool.Parse(jsonDictionary["_withLadyFrog"]);
+                    var onPlatform = bool.Parse(jsonDictionary["_onPlatform"]);
+                    var numberOfJumps = int.Parse(jsonDictionary["_numberOfJumps"]);
+                    var died = bool.Parse(jsonDictionary["_died"]);
+                    var position = new Vector2(frogX, frogY);
+                    var frogScript = frog.GetComponent<FrogMovement>();
+                    frogScript.LoadData(speed, position,  onPlatform, furthestTraveled,withLadyFrog, numberOfJumps, died);
+                }
+                catch (KeyNotFoundException e)
+                {
+                    print(e);
+                }
             }
 
             if (filename.Contains("Log"))

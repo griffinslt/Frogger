@@ -10,7 +10,8 @@ namespace Commands
         
         public static bool ForwardButtonPressed()
         { 
-            return Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
+            return Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) 
+                || Input.GetKeyDown(KeyCode.Space);
         }
 
         public static bool BackwardButtonPressed()
