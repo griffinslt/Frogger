@@ -10,7 +10,11 @@ namespace Commands
 
         public override Vector2 Execute()
         {
-            return Vector2.zero;
+            //set orientation
+            EntityTransform.eulerAngles = new Vector3(0,0,-90);
+            //set movement
+            Movement += new Vector2(Speed, 0);
+            return Movement;
 
         }
     }

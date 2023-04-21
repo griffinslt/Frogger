@@ -13,9 +13,9 @@ namespace Commands
         private Command _rightButton;
 
 
-        public void CheckMovement()
+        public bool ForwardButtonPressed()
         {
-           
+            return false;
         }
         
         

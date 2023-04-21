@@ -112,30 +112,20 @@ public class FrogMovement : MonoBehaviour, IEntity
         
         if (Input.GetKeyDown(KeyCode.W)) 
         {
-            // transform1.eulerAngles = new Vector3(0,0,0);
-            // // transform1.position = _currentPos + new Vector2(0,speed);
-            // movement += new Vector2(0,speed);
-            Command upCommand = new ForwardCommand(this, speed);
-            movement = upCommand.Execute();
+            movement += new ForwardCommand(this, speed).Execute();
             NumOfForwardJumpsCheck();
         } 
         if (Input.GetKeyDown(KeyCode.S)) 
         {
-            transform1.eulerAngles = new Vector3(0,0,180);
-            // transform1.position = _currentPos + new Vector2(0,-speed);
-            movement += new Vector2(0,-speed);
+            movement += new BackCommand(this,speed).Execute();
         } 
         if (Input.GetKeyDown(KeyCode.D)) 
         {
-            transform1.eulerAngles = new Vector3(0,0,-90);
-            // transform1.position = _currentPos + new Vector2(speed,0);
-            movement += new Vector2(speed, 0);
+            movement += new RightCommand(this, speed).Execute();
         } 
         if (Input.GetKeyDown(KeyCode.A)) 
         {
-            transform1.eulerAngles = new Vector3(0,0,90);            
-            // transform1.position = _currentPos + new Vector2(-speed,0);
-            movement += new Vector2(-speed, 0);
+            movement += new LeftCommand(this, speed).Execute();
             
         }
 

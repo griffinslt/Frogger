@@ -2,18 +2,19 @@ using UnityEngine;
 
 namespace Commands
 {
-    public class LeftCommand : MonoBehaviour
+    public class LeftCommand : MoveCommand
     {
-        // Start is called before the first frame update
-        void Start()
+        public LeftCommand(IEntity e, float speed) : base(e, speed)
         {
-        
         }
 
-        // Update is called once per frame
-        void Update()
+        public override Vector2 Execute()
         {
-        
+            //set orientation
+            EntityTransform.eulerAngles = new Vector3(0,0,90);
+            //set movement
+            Movement += new Vector2(-Speed, 0);
+            return Movement;
         }
     }
 }
