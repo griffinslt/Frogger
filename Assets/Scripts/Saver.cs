@@ -1,6 +1,8 @@
 
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
+using PlayerProfile;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +26,7 @@ public class Saver : MonoBehaviour
             Instance = this; 
         }
         _sceneName = SceneManager.GetActiveScene().name;
-        _folder = Application.dataPath + "/SaveFiles/" +  SceneManager.GetActiveScene().name + "/"; 
+        _folder = Application.dataPath + "/SaveFiles/" + "Player"+ PlayerSelector.SelectedPlayer + "/" + SceneManager.GetActiveScene().name + "/"; 
         
     }
     public void Save()
@@ -44,18 +46,18 @@ public class Saver : MonoBehaviour
 
     private static void CheckHighScore()
     {
-        string highScoreFilePath = _folder + "HIGHSCORE.txt";
+        string highScoreFilePath = Application.dataPath + "/SaveFiles/"+ SceneManager.GetActiveScene().name + "HIGHSCORE.txt";
         int score = ScoreKeeper.GetScore();
         if (!File.Exists(highScoreFilePath))
         {
-            File.WriteAllText(highScoreFilePath, score.ToString());
+            File.WriteAllText(highScoreFilePath, score + "\n" + PlayerSelector.SelectedPlayer);
         }
         else
         {
-            int oldHighScore = int.Parse(File.ReadAllText(highScoreFilePath));
+            int oldHighScore = int.Parse(File.ReadLines(highScoreFilePath).First());
             if (oldHighScore < score)
             {
-                File.WriteAllText(highScoreFilePath, score.ToString());
+                File.WriteAllText(highScoreFilePath, score + "\n" + PlayerSelector.SelectedPlayer);
             }
         }
 
@@ -70,7 +72,7 @@ public class Saver : MonoBehaviour
         int turtleCount = 0;
         int carCount = 0;
         int homeFrogCount = 0;
-        string achievementsFolder = Application.dataPath + "/SaveFiles/Achievements";
+        string achievementsFolder = Application.dataPath + "/SaveFiles/Player"+ PlayerSelector.SelectedPlayer + "/Achievements";
         if (!Directory.Exists(achievementsFolder))
         {
             Directory.CreateDirectory(achievementsFolder);

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using PlayerProfile;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace ButtonBehaviours
             // { 
             //     Instance = this; 
             // }
-            _folder = Application.dataPath + "/SaveFiles/";
+            _folder = Application.dataPath + "/SaveFiles/" + "Player" + PlayerSelector.SelectedPlayer + "/";
             for (int i = 1; i < 3; i++)
             {
                 if (!Directory.Exists(_folder))

@@ -163,6 +163,7 @@ public class GameLoader : MonoBehaviour
             {
                 var levelDictionary = JsonConvert.DeserializeObject<Dictionary<string, int>>(fileJson);
                 LevelInfo.Load(levelDictionary["DataTimeForLevel"], levelDictionary["CurrentTime"]);
+                Time.timeScale = 1;
             }
             
             
