@@ -22,6 +22,8 @@ TagManager:
   - UpBarrier
   - DownBarrier
   - LevelInfo
+  - ButtonContainer
+  - clone
   layers:
   - Default
   - TransparentFX

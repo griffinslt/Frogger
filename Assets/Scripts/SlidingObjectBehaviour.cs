@@ -62,11 +62,15 @@ public class SlidingObjectBehaviour : MonoBehaviour
 
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!CheckInBounds())
         {
-            Destroy(gameObject);
+            if (gameObject.name == "clone")
+            {
+                Destroy(gameObject);
+            }
+           
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,8 +30,14 @@ public class GameLoader : MonoBehaviour
             Instance = this; 
         }
         SlidingObjectBehaviour._ids = 0;
+        StartCoroutine(WaitBeforeLoad());
         LoadFile(FolderToLoadFrom.folderPath);
         SlidingObjectBehaviour._ids = 0;
+    }
+
+    private IEnumerator WaitBeforeLoad()
+    {
+        yield return new WaitForSeconds(2);
     }
 
     public void LoadFile(string folder)
@@ -83,7 +90,8 @@ public class GameLoader : MonoBehaviour
                     var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
                         float.Parse(jsonDictionary["currentY"]));
                     var rotation = new Quaternion(0, 0, 0, 0);
-                    Instantiate(log, position, rotation);
+                    var newLog = Instantiate(log, position, rotation);
+                    newLog.name = "clone";
                     var logScript = log.GetComponent<SlidingObjectBehaviour>();
                     logScript.Load(speed, ids, id);
                 }
@@ -99,7 +107,8 @@ public class GameLoader : MonoBehaviour
                     var position = new Vector2(float.Parse(jsonDictionary["currentX"]),
                         float.Parse(jsonDictionary["currentY"]));
                     var rotation = new Quaternion(0, 0, 180, 0);
-                    Instantiate(turtle, position, rotation);
+                    var newTurtle = Instantiate(turtle, position, rotation);
+                    newTurtle.name = "clone";
                     var turtleScript = turtle.GetComponent<SlidingObjectBehaviour>();
                     turtleScript.Load(speed, ids, id);
                 }
@@ -125,7 +134,8 @@ public class GameLoader : MonoBehaviour
                         rotation = new Quaternion(0, 0, 0, 0);
                     }
 
-                    Instantiate(car, position, rotation);
+                    var newCar = Instantiate(car, position, rotation);
+                    newCar.name = "clone";
                     var carScript = car.GetComponent<SlidingObjectBehaviour>();
                     carScript.Load(speed, ids, id);
                 }

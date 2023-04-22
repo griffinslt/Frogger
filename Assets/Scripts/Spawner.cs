@@ -34,6 +34,8 @@ public class Spawner : MonoBehaviour
         {
             print(startingPoint.position.x);
         }
-        Instantiate(movingGameObject, startingPoint.position, startingPoint.rotation);
+        var newSlidingObject = Instantiate(movingGameObject, startingPoint.position, startingPoint.rotation);
+        newSlidingObject.name = "clone";
+
     }
 }
