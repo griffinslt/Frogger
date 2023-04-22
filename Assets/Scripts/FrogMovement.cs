@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Commands;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -23,6 +25,10 @@ public class FrogMovement : MonoBehaviour, IEntity
     private bool _withLadyFrog;
     private int _numberOfJumps;
     private bool _died;
+    private float speedPowerUpCountDown;
+    private float scoreMultiplierCountDown;
+    [SerializeField] private TextMeshProUGUI scoreMultiplyText;
+    [SerializeField] private TextMeshProUGUI speedText;
 
 
     [Serializable]
@@ -198,8 +204,58 @@ public class FrogMovement : MonoBehaviour, IEntity
             CheckCarCollision(collision);
             CheckLogCollision(collision);
             CheckTurtleCollision(collision);
+            Check2XCollision(collision);
+            CheckSpeedCollision(collision);
         }
 
+        speedPowerUpCountDown -= Time.deltaTime;
+        if (speedPowerUpCountDown < 0)
+        {
+            speed = 1;
+        }
+
+        if (speedPowerUpCountDown >= 0)
+        {
+            int countdown = (int)speedPowerUpCountDown;
+            speedText.text = countdown.ToString();
+        }
+        
+        scoreMultiplierCountDown -= Time.deltaTime;
+        if (scoreMultiplierCountDown < 0)
+        {
+            ScoreKeeper.Instance.ResetMultiplier();
+        }
+
+        if (scoreMultiplierCountDown >= 0)
+        {
+            int countdown = (int)scoreMultiplierCountDown;
+            scoreMultiplyText.text = countdown.ToString();
+        }
+        
+    }
+
+    private void CheckSpeedCollision(Collider2D collision)
+    {
+
+        if (collision.CompareTag("SpeedPowerUp"))
+        {
+            speedPowerUpCountDown = 10;
+            speed = 2;
+            Destroy(collision.gameObject);
+        }
+        
+    }
+
+    private void Check2XCollision(Collider2D collision)
+    {
+        if (collision.CompareTag("2XPowerUp"))
+        {
+            scoreMultiplierCountDown = 10;
+            ScoreKeeper.Instance.AddMultiplier(2);
+            Destroy(collision.gameObject);
+        }
+
+        
     }
 
     private void CheckHomeCollision(Collider2D collision)

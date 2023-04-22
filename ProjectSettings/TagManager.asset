@@ -24,6 +24,8 @@ TagManager:
   - LevelInfo
   - ButtonContainer
   - clone
+  - 2XPowerUp
+  - SpeedPowerUp
   layers:
   - Default
   - TransparentFX
@@ -35,7 +37,7 @@ TagManager:
   - Frog
   - Car
   - Barriers
-  - 
+  - Powerup
   - 
   - 
   - 

@@ -38,6 +38,11 @@ public class ScoreKeeper : MonoBehaviour
         _scoreMultiplier *= amount;
     }
 
+    public void ResetMultiplier()
+    {
+        _scoreMultiplier = 1;
+    }
+
     public void AddScore(int amount)
     {
         _score += amount * _scoreMultiplier;

@@ -1,20 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class Spawner : MonoBehaviour
+public abstract class Spawner : MonoBehaviour
 {
-    [SerializeField] private float delay;
-    private float _spawnDelay;
-    public Transform[] spawnPoints;
-    [SerializeField] private GameObject movingGameObject;
+    [SerializeField] protected float delay;
+    protected float _spawnDelay;
+    
 
-
-    private void Awake()
+    protected void Awake()
     {
         _spawnDelay = delay;
     }
 
-    private void Update()
+    protected void Update()
     {
         if (_spawnDelay <= 0)
         {
@@ -27,15 +26,6 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void SpawnGameObject()
-    {
-        Transform startingPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        if (gameObject.CompareTag("Turtle"))
-        {
-            print(startingPoint.position.x);
-        }
-        var newSlidingObject = Instantiate(movingGameObject, startingPoint.position, startingPoint.rotation);
-        newSlidingObject.name = "clone";
+    protected abstract void SpawnGameObject();
 
-    }
 }

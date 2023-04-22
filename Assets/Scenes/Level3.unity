@@ -3123,11 +3123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
+  gameObjectToSpawn: {fileID: 1480093900}
   spawnPoints:
   - {fileID: 2002706146}
   - {fileID: 801182507}
   - {fileID: 477114697}
-  movingGameObject: {fileID: 1480093900}
 --- !u!1 &724934592
 GameObject:
   m_ObjectHideFlags: 0
@@ -3689,6 +3689,8 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  scoreMultiplyText: {fileID: 0}
+  speedText: {fileID: 0}
 --- !u!212 &750302744
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5303,9 +5305,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2
+  gameObjectToSpawn: {fileID: 751069767}
   spawnPoints:
   - {fileID: 495909866}
-  movingGameObject: {fileID: 751069767}
 --- !u!4 &968394708
 Transform:
   m_ObjectHideFlags: 0
@@ -8571,13 +8573,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.5
+  gameObjectToSpawn: {fileID: 335172696}
   spawnPoints:
   - {fileID: 1146286244}
   - {fileID: 1162444745}
   - {fileID: 447053512}
   - {fileID: 939485126}
   - {fileID: 36726112}
-  movingGameObject: {fileID: 335172696}
 --- !u!1 &1559385780
 GameObject:
   m_ObjectHideFlags: 0
