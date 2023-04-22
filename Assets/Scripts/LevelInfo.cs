@@ -10,7 +10,7 @@ public class LevelInfo : MonoBehaviour
 {
     public static LevelInfo Instance { get; set; }
 
-    private static int _timeForLevel = 100;
+    private static int _timeForLevel = 120;
     [SerializeField] private int maxNumberOfHomeFrogs = 4;
 
     [SerializeField] private GameObject winMenu;
@@ -35,6 +35,11 @@ public class LevelInfo : MonoBehaviour
             Instance = this; 
         }
 
+    }
+
+    public static void ChangeTimeForLevel(int time)
+    {
+        _timeForLevel = time;
     }
 
     private void Update()

@@ -59,6 +59,7 @@ public class FrogMovement : MonoBehaviour, IEntity
 
     private void Update()
     {
+        if (Time.timeSinceLevelLoad < 1) return; 
         if (Time.timeScale > 0)
         {
             CheckMovement();
