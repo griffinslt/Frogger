@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using PlayerProfile;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,7 +17,7 @@ namespace ButtonBehaviours
         private static string _folder;
         private static string[] _files;
         private GameObject[] loadButtons;
-        private static int level;
+        private static int _level;
 
         private void Start()
         {
@@ -53,13 +54,31 @@ namespace ButtonBehaviours
             }
         }
 
-        public void LoadLevel1()
+        private void CreateDirectory(string path)
         {
-            level = 1;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        public void LoadLevel(int level)
+        {
+            _level = level;
             ClearButtons();
-            _files = Directory.GetDirectories(_folder + "Level1").ToArray();
+            string path = _folder + "Level" + _level;
+            CreateDirectory(path);
+            
+            _files = Directory.GetDirectories(path).ToArray();
             Array.Reverse(_files);
-            //loadButtons = GameObject.FindGameObjectsWithTag("LoadLevelButton");
+            
+            string unlockedLevelFilePath = "Assets/SaveFiles/Player" + PlayerSelector.SelectedPlayer + "/unlockedTo.txt";
+            var unlockedTo = int.Parse(File.ReadAllText(unlockedLevelFilePath));
+            if (unlockedTo >= level)
+            {
+                _files = _files.ToList().Prepend("Assets/SaveFiles/Start Of Level").ToArray();
+            }
+            
             for (int i = 0; i < _files.Length; i++)
             {
                 loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
@@ -70,37 +89,6 @@ namespace ButtonBehaviours
             }
         }
         
-        public void LoadLevel2()
-        {
-            level = 2;
-            ClearButtons();
-            _files = Directory.GetDirectories(_folder + "Level2").ToArray();
-            Array.Reverse(_files);
-            for (int i = 0; i < _files.Length; i++)
-            {
-                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
-                if (i == loadButtons.Length-1)
-                {
-                    break;
-                }
-            }
-        }
-        
-        public void LoadLevel3()
-        {
-            level = 3;
-            ClearButtons();
-            _files = Directory.GetDirectories(_folder + "Level3").ToArray();
-            Array.Reverse(_files);
-            for (int i = 0; i < _files.Length; i++)
-            {
-                loadButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(_files[i]);
-                if (i == loadButtons.Length-1)
-                {
-                    break;
-                }
-            }
-        }
 
         public void LoadSelectedLevel(GameObject button)
         {
@@ -110,15 +98,13 @@ namespace ButtonBehaviours
                 return;
             }
             
-            switch (level)
+            switch (_level)
             {
                 case 1:
-                    // SceneManager.LoadScene("Level1");
                     TransitionLoader.Instance.LoadTransition(1);
                     break;
                 case 2:
-                    // SceneManager.LoadScene("Level2");
-                    // TransitionLoader.Instance.LoadTransition(2);
+                    TransitionLoader.Instance.LoadTransition(2);
                     break;
                 case 3:
                     // SceneManager.LoadScene("Level3");
@@ -128,11 +114,7 @@ namespace ButtonBehaviours
             string chosenFile = _files[buttonIndex];
             FolderToLoadFrom.folderPath = chosenFile;
         }
-
-        public void LoadNewForLevel()
-        {
-            
-        }
+        
     
     }
 }
