@@ -3,6 +3,7 @@ using System.IO;
 using PlayerProfile;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class LevelInfo : MonoBehaviour
@@ -10,7 +11,7 @@ public class LevelInfo : MonoBehaviour
     public static LevelInfo Instance { get; set; }
 
     private static int _timeForLevel = 100;
-    private int _maxNumberOfHomeFrogs = 4;
+    [SerializeField] private int maxNumberOfHomeFrogs = 4;
 
     [SerializeField] private GameObject winMenu;
     [SerializeField] private GameObject gameMenu;
@@ -38,7 +39,7 @@ public class LevelInfo : MonoBehaviour
 
     private void Update()
     {
-        if (HomeFrog.NumberOfHomeFrogs > _maxNumberOfHomeFrogs)
+        if (HomeFrog.NumberOfHomeFrogs > maxNumberOfHomeFrogs)
         {
             Win();
         }
@@ -47,6 +48,7 @@ public class LevelInfo : MonoBehaviour
     private void Win()
     {
         Time.timeScale = 0;
+        Saver.Instance.Save();
         gameMenu.SetActive(false);
         winMenu.SetActive(true); // they have got the high score for the level 
         string currentLevelStr = SceneManager.GetActiveScene().name;

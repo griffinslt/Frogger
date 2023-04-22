@@ -58,7 +58,7 @@ public class Saver : MonoBehaviour
     private static void CheckHighScore()
     {
         string highScoreFilePath = Application.dataPath + "/SaveFiles/"+ SceneManager.GetActiveScene().name + "HIGHSCORE.txt";
-        int score = ScoreKeeper.GetScore();
+        int score = ScoreKeeper.Instance.GetScore();
         if (!File.Exists(highScoreFilePath))
         {
             File.WriteAllText(highScoreFilePath, score + "\n" + PlayerSelector.SelectedPlayer);

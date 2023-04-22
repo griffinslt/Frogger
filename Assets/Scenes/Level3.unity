@@ -5470,9 +5470,9 @@ GameObject:
   - component: {fileID: 994284223}
   - component: {fileID: 994284222}
   - component: {fileID: 994284221}
-  - component: {fileID: 994284224}
+  - component: {fileID: 994284220}
   m_Layer: 5
-  m_Name: NextLevelButton
+  m_Name: PlayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5499,6 +5499,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 66}
   m_SizeDelta: {x: 389.1509, y: 112.3206}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &994284220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994284218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04afb648c12734421b44c727abc1ec06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &994284221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5542,19 +5554,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 994284222}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 994284224}
-        m_TargetAssemblyTypeName: ButtonBehaviours.NextLevelButton, Assembly-CSharp
-        m_MethodName: OnButtonPress
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &994284222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5593,18 +5593,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994284218}
   m_CullTransparentMesh: 1
---- !u!114 &994284224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 994284218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ace48ad81ec614fa493e4d5661d999ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1001432146
 GameObject:
   m_ObjectHideFlags: 0
@@ -9324,7 +9312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7cd7515682a47fc89a498e90606f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNumberOfHomeFrogs: 4
   winMenu: {fileID: 613337235}
   gameMenu: {fileID: 1516493379}
   loseMenu: {fileID: 743800825}

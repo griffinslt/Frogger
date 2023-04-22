@@ -6,7 +6,7 @@ namespace PlayerProfile
 {
   public class PlayerSelector : MonoBehaviour
   {
-    public static int SelectedPlayer;
+    public static int SelectedPlayer = 1;
 
     private void Start()
     {

@@ -5,7 +5,7 @@ public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper Instance { get; set; }
     private int _scoreMultiplier = 1; //change this when using a 2x multiplier or something
-    private static int _score;
+    private int _score;
     public TextMeshProUGUI scoreMessage;
 
     private struct ScoreData
@@ -45,7 +45,7 @@ public class ScoreKeeper : MonoBehaviour
     }
 
 
-    public static int GetScore()
+    public int GetScore()
     {
         return _score;
     }
