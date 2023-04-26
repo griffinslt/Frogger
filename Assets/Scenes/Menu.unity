@@ -5557,6 +5557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievementPrefab: {fileID: 286990873}
   newSprite: {fileID: 21300000, guid: 13922cb0720e94f1eb4a833a1fcc6df6, type: 3}
+  notAchievedSprite: {fileID: 21300000, guid: 10ec0f91e35104076a2d6aec298afd75, type: 3}
 --- !u!1 &1140517812
 GameObject:
   m_ObjectHideFlags: 0

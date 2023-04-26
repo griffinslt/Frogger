@@ -43,6 +43,7 @@ public class GameLoader : MonoBehaviour
     public void LoadFile(string folder)
     {
         print(folder);
+        AchievementSetter.SetAchievements();
         //loop through all game objects are remove the ones that will be changed
         if (!Directory.Exists(folder))
         {
