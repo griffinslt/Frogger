@@ -11,7 +11,7 @@ public class HighScoreGetter : MonoBehaviour
     private string _workingDirectory;
     void Awake()
     {
-        _workingDirectory = RootPathStorer.RootPath + "SaveFiles" + Path.DirectorySeparatorChar;
+        _workingDirectory = RootPathStorer.RootPath + Path.DirectorySeparatorChar;
         l1HighscoreText.text = ChangeScreenText(_workingDirectory + "Level1HIGHSCORE.txt");
         l2HighscoreText.text = ChangeScreenText(_workingDirectory + "Level2HIGHSCORE.txt");
         l3HighscoreText.text = ChangeScreenText(_workingDirectory + "Level3HIGHSCORE.txt");

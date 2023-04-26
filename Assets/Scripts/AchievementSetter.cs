@@ -12,11 +12,13 @@ public class AchievementSetter : MonoBehaviour
         SetAchievements();
     }
 
-    private static void SetAchievements()
+    public static void SetAchievements()
     {
         string filepath = RootPathStorer.RootPath+ "Player" + PlayerSelector.SelectedPlayer + Path.DirectorySeparatorChar + "Achievements";
+        print(filepath);
         if (!Directory.Exists(filepath))
         {
+            Achievements.Clear();
             Achievements.Add(new Achievement("100 Jumps"));
             Achievements.Add(new Achievement("250 Jumps"));
             Achievements.Add(new Achievement("500 Jumps"));
