@@ -1,4 +1,7 @@
+
+
 public class FolderToLoadFrom
 {
-    public static string folderPath = "Assets/SaveFiles/Start Of Level";
+    public static string FolderPath = RootPathStorer.RootPath + "Start Of Level";
+    
 }

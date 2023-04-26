@@ -3,10 +3,8 @@ using System.IO;
 using System.Linq;
 using PlayerProfile;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 
 namespace ButtonBehaviours
@@ -30,7 +28,7 @@ namespace ButtonBehaviours
             // { 
             //     Instance = this; 
             // }
-            _folder = Application.dataPath + "/SaveFiles/" + "Player" + PlayerSelector.SelectedPlayer + "/";
+            _folder = RootPathStorer.RootPath + "Player" + PlayerSelector.SelectedPlayer + "/";
             for (int i = 1; i < 3; i++)
             {
                 if (!Directory.Exists(_folder))
@@ -71,12 +69,23 @@ namespace ButtonBehaviours
             
             _files = Directory.GetDirectories(path).ToArray();
             Array.Reverse(_files);
+            print(_files);
             
-            string unlockedLevelFilePath = "Assets/SaveFiles/Player" + PlayerSelector.SelectedPlayer + "/unlockedTo.txt";
-            var unlockedTo = int.Parse(File.ReadAllText(unlockedLevelFilePath));
+            string unlockedLevelFilePath = RootPathStorer.RootPath + "Player" + PlayerSelector.SelectedPlayer + Path.DirectorySeparatorChar+ "unlockedTo.txt";
+            string fileContents = File.ReadAllText(unlockedLevelFilePath);
+            int unlockedTo;
+            if (fileContents.Length < 1)
+            {
+                unlockedTo = 1;
+            }
+            else
+            {
+                unlockedTo = int.Parse(File.ReadAllText(unlockedLevelFilePath));
+            }
+            
             if (unlockedTo >= level)
             {
-                _files = _files.ToList().Prepend("Assets/SaveFiles/Start Of Level").ToArray();
+                _files = _files.ToList().Prepend(RootPathStorer.RootPath + "Start Of Level").ToArray();
             }
             
             for (int i = 0; i < _files.Length; i++)
@@ -112,7 +121,7 @@ namespace ButtonBehaviours
                     break;
             }
             string chosenFile = _files[buttonIndex];
-            FolderToLoadFrom.folderPath = chosenFile;
+            FolderToLoadFrom.FolderPath = chosenFile;
         }
         
     

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -13,7 +11,7 @@ public class HighScoreGetter : MonoBehaviour
     private string _workingDirectory;
     void Awake()
     {
-        _workingDirectory = Application.dataPath + "/SaveFiles/";
+        _workingDirectory = RootPathStorer.RootPath + "SaveFiles" + Path.DirectorySeparatorChar;
         l1HighscoreText.text = ChangeScreenText(_workingDirectory + "Level1HIGHSCORE.txt");
         l2HighscoreText.text = ChangeScreenText(_workingDirectory + "Level2HIGHSCORE.txt");
         l3HighscoreText.text = ChangeScreenText(_workingDirectory + "Level3HIGHSCORE.txt");

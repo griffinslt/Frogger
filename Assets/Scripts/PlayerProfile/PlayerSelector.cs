@@ -11,12 +11,25 @@ namespace PlayerProfile
     private void Start()
     {
       CheckDefault();
+      if (!Directory.Exists( RootPathStorer.RootPath + "Start Of Level"))
+      {
+        Directory.CreateDirectory(RootPathStorer.RootPath + "Start Of Level");
+      }
     }
 
     public static void CheckDefault()
     {
-      string file = Application.dataPath + "/SaveFiles/defaultPlayer.txt";
-      var num = int.Parse(File.ReadAllText(file));
+      string file = RootPathStorer.RootPath + "defaultPlayer.txt";
+      int num;
+      if (!File.Exists(file))
+      {
+        num = 1;
+      }
+      else
+      {
+        num = int.Parse(File.ReadAllText(file));
+      }
+      
       SelectedPlayer = num;
     }
 
@@ -32,7 +45,7 @@ namespace PlayerProfile
 
     public void SetAsDefault(int p)
     {
-      string file = Application.dataPath + "/SaveFiles/defaultPlayer.txt";
+      string file =  RootPathStorer.RootPath + "defaultPlayer.txt";
       File.WriteAllText(file, p.ToString());
       CheckDefault();
     }

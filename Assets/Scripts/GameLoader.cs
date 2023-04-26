@@ -31,7 +31,7 @@ public class GameLoader : MonoBehaviour
         }
         SlidingObjectBehaviour._ids = 0;
         StartCoroutine(WaitBeforeLoad());
-        LoadFile(FolderToLoadFrom.folderPath);
+        LoadFile(FolderToLoadFrom.FolderPath);
         SlidingObjectBehaviour._ids = 0;
     }
 
@@ -42,6 +42,7 @@ public class GameLoader : MonoBehaviour
 
     public void LoadFile(string folder)
     {
+        print(folder);
         //loop through all game objects are remove the ones that will be changed
         if (!Directory.Exists(folder))
         {

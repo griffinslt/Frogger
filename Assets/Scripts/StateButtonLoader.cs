@@ -11,7 +11,11 @@ public class StateButtonLoader : MonoBehaviour
     [SerializeField] private GameObject buttonPrefab;
     private void OnEnable()
     {
-        string folderPath = "Assets/SaveFiles/CurrentGame";
+        string folderPath = RootPathStorer.RootPath + "CurrentGame";
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
         string[] folders = Directory.GetDirectories(folderPath);
         foreach (var folder in folders.Reverse())
         {

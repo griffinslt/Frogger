@@ -58,7 +58,7 @@ public class LevelInfo : MonoBehaviour
         winMenu.SetActive(true); // they have got the high score for the level 
         string currentLevelStr = SceneManager.GetActiveScene().name;
         int currentLevel = int.Parse(currentLevelStr.Substring(currentLevelStr.Length - 1));
-        string filename = "Assets/SaveFiles/Player" + PlayerSelector.SelectedPlayer + "/unlockedTo.txt";
+        string filename = RootPathStorer.RootPath + "Player" + PlayerSelector.SelectedPlayer + "/unlockedTo.txt";
         if (File.Exists(filename))
         {
             int oldLevel = int.Parse(File.ReadAllText(filename));

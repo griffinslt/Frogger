@@ -13,6 +13,5 @@ namespace Commands
         }
 
         public abstract Vector2 Execute();
-    
     }
 }

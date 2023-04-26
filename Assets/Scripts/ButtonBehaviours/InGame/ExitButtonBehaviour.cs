@@ -1,3 +1,5 @@
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
@@ -10,7 +12,7 @@ namespace ButtonBehaviours.InGame
         public void OnButtonPress()
         {
             // SceneManager.LoadScene("Menu");
-            const string currentGameFolder = "Assets/SaveFiles/CurrentGame/";
+            string currentGameFolder = RootPathStorer.RootPath +  "CurrentGame" + Path.DirectorySeparatorChar;
             if (Directory.Exists(currentGameFolder))
             {
                 Directory.Delete(currentGameFolder, recursive:true);

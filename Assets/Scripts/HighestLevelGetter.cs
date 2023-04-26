@@ -17,8 +17,20 @@ public class HighestLevelGetter : MonoBehaviour
 
     private string GetPlayerHighLevel(string player)
     {
-        string filename = "Assets/SaveFiles/Player" + player + "/unlockedTo.txt";
-        return File.ReadAllText(filename);
+        string folder = RootPathStorer.RootPath + "Player" + player + Path.DirectorySeparatorChar;
+        string file = folder + "unlockedTo.txt";
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+
+        }
+
+        if (!File.Exists(file))
+        {
+            return "1";
+
+        }
+        return File.ReadAllText(file);
     }
     
     

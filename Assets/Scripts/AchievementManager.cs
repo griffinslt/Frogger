@@ -10,7 +10,7 @@ public class AchievementManager : MonoBehaviour
 
    private static readonly Queue<Achievement> AchievementsQ = new();
 
-   public void NotifyAchievementComplete(Achievement achievement)
+   public static void NotifyAchievementComplete(Achievement achievement)
    {
       AchievementsQ.Enqueue(achievement);
    }
@@ -31,7 +31,6 @@ public class AchievementManager : MonoBehaviour
    private void UnlockAchievement(Achievement achievement)
    {
       achievement.Unlock();
-      Achievements.Add(achievement);
       RunUnlockAchievementAnimation(achievement.GetName());
    }
 
@@ -39,13 +38,13 @@ public class AchievementManager : MonoBehaviour
    {
       switch (achievementName)
       {
-         case "10 Jumps":
+         case "100 Jumps":
             achievementUI[0].SetActive(true);
             break;
-         case "50 Jumps":
+         case "250 Jumps":
             achievementUI[1].SetActive(true);
             break;
-         case "100 Jumps":
+         case "500 Jumps":
             achievementUI[2].SetActive(true);
             break;
          case "Level 1 Complete":

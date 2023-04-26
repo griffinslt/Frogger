@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Commands;
 using TMPro;
 using Unity.VisualScripting;
@@ -8,6 +9,8 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.SocialPlatforms.Impl;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -92,18 +95,8 @@ public class FrogMovement : MonoBehaviour, IEntity
     public void DidFrogDie()
     {
         if (_died) return;
-        var level = "error";
-        if (SceneManager.GetActiveScene().name == "Level1")
-        {
-            level = "Level 1";
-        } else if (SceneManager.GetActiveScene().name == "Level2")
-        {
-            level = "Level 2";
-        } else if (SceneManager.GetActiveScene().name == "Level2")
-        {
-            level = "Level 3";
-        }
-        achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName(level + " Complete No Death"));
+        var level = SceneManager.GetActiveScene().buildIndex;
+        AchievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("Level " + level + " Complete No Death"));
     }
     
 
@@ -133,30 +126,16 @@ public class FrogMovement : MonoBehaviour, IEntity
     private void CheckMovement()
     {
         _currentPos = transform.position;
-        Vector2 movement = new Vector2(0, 0);
-        var transform1 = transform;
-        
-        
-        
-        if (InputHandler.ForwardButtonPressed()) 
-        {
-            movement += new ForwardCommand(this, speed).Execute();
-            NumOfForwardJumpsCheck();
-        } 
-        if (InputHandler.BackwardButtonPressed()) 
-        {
-            movement += new BackCommand(this,speed).Execute();
-        } 
-        if (InputHandler.RightButtonPressed()) 
-        {
-            movement += new RightCommand(this, speed).Execute();
-        } 
-        if (InputHandler.LeftButtonPressed()) 
-        {
-            movement += new LeftCommand(this, speed).Execute();
-            
-        }
+        Vector2 movement = Vector2.zero;
 
+        movement += InputHandler.ForwardButtonPressed(this, speed);
+        if (movement.magnitude > 0)
+        {
+            NumOfForwardJumpsCheck();
+        }
+        movement += InputHandler.BackwardButtonPressed(this,speed);
+        movement += InputHandler.RightButtonPressed(this, speed);
+        movement += InputHandler.LeftButtonPressed(this, speed);
         _currentPos += movement;
         transform.position = _currentPos;
         if (movement.magnitude > 0)
@@ -164,32 +143,43 @@ public class FrogMovement : MonoBehaviour, IEntity
             _numberOfJumps++;
             JumpAchievementCheck();
         }
-        
-        
     }
 
     private void JumpAchievementCheck()
     {
         try
         {
+            Achievement achievement;
             switch (_numberOfJumps)
             {
+                    
                 case 100:
-                    var achievement = Achievements.FindAchievementByName("100 Jumps");
-                    achievementManager.NotifyAchievementComplete(achievement);
+                     achievement = Achievements.FindAchievementByName("100 Jumps");
+                    if (!achievement.IsUnlocked())
+                    {
+                        AchievementManager.NotifyAchievementComplete(achievement);
+                    }
                     break;
                 case 250:
-                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("250 Jumps"));
+                    achievement = Achievements.FindAchievementByName("250 Jumps");
+                    if (!achievement.IsUnlocked())
+                    {
+                        AchievementManager.NotifyAchievementComplete(achievement);
+                    }
                     break;
                 case 500:
-                    achievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("500 Jumps"));
+                    achievement = Achievements.FindAchievementByName("500 Jumps");
+                    if (!achievement.IsUnlocked())
+                    {
+                        AchievementManager.NotifyAchievementComplete(achievement);
+                    }
                     break;
             }
         }
         catch (KeyNotFoundException e)
         {
             Console.WriteLine(e);
-            print("does not exist");
+            print("Achievement does not exist");
         }
         
     }

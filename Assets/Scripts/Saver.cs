@@ -34,7 +34,7 @@ public class Saver : MonoBehaviour
             Instance = this; 
         }
         _sceneName = SceneManager.GetActiveScene().name;
-        _folder = Application.dataPath + "/SaveFiles/" + "Player"+ PlayerSelector.SelectedPlayer + "/" + SceneManager.GetActiveScene().name + "/";
+        _folder = RootPathStorer.RootPath + "Player"+ PlayerSelector.SelectedPlayer + Path.DirectorySeparatorChar + SceneManager.GetActiveScene().name + Path.DirectorySeparatorChar;
     }
 
    
@@ -57,7 +57,7 @@ public class Saver : MonoBehaviour
 
     private static void CheckHighScore()
     {
-        string highScoreFilePath = Application.dataPath + "/SaveFiles/"+ SceneManager.GetActiveScene().name + "HIGHSCORE.txt";
+        string highScoreFilePath = RootPathStorer.RootPath + SceneManager.GetActiveScene().name + "HIGHSCORE.txt";
         int score = ScoreKeeper.Instance.GetScore();
         if (!File.Exists(highScoreFilePath))
         {
@@ -83,7 +83,7 @@ public class Saver : MonoBehaviour
         int turtleCount = 0;
         int carCount = 0;
         int homeFrogCount = 0;
-        string achievementsFolder = Application.dataPath + "/SaveFiles/Player"+ PlayerSelector.SelectedPlayer + "/Achievements";
+        string achievementsFolder = RootPathStorer.RootPath + "Player"+ PlayerSelector.SelectedPlayer + Path.DirectorySeparatorChar +"Achievements";
         if (!Directory.Exists(achievementsFolder))
         {
             Directory.CreateDirectory(achievementsFolder);
@@ -92,7 +92,7 @@ public class Saver : MonoBehaviour
         var achievements = Achievements.Get();
         for (int i = 0; i < Achievements.Get().Count; i++)
         {
-            string fileName = achievementsFolder + "/Achievement" + i + json;
+            string fileName = achievementsFolder + Path.DirectorySeparatorChar + "Achievement" + i + json;
             File.WriteAllText(fileName, string.Empty);
             File.WriteAllText(fileName, achievements[i].ToJson());
         }
@@ -100,38 +100,38 @@ public class Saver : MonoBehaviour
         {
             if (gameObjectFromArray.CompareTag("Log"))
             {
-                File.WriteAllText(_dateTimeFolder + "/Log" + logCount + json, 
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "Log" + logCount + json, 
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 logCount++;
             } else if (gameObjectFromArray.CompareTag("Frog"))
             {
-                File.WriteAllText(_dateTimeFolder + "/Frog" + json,
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "Frog" + json,
                 gameObjectFromArray.GetComponent<FrogMovement>().ToJson());
             }
             else if (gameObjectFromArray.CompareTag("Turtle"))
             {
-                File.WriteAllText(_dateTimeFolder + "/Turtle" + turtleCount + json,
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "Turtle" + turtleCount + json,
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 turtleCount++;
             } else if (gameObjectFromArray.CompareTag("Car"))
             {
-                File.WriteAllText(_dateTimeFolder + "/Car" + carCount + json, 
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "Car" + carCount + json, 
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 carCount++;
             } else if (gameObjectFromArray.CompareTag("HomeFrog"))
             {
-                File.WriteAllText(_dateTimeFolder + "/HomeFrog" + homeFrogCount + json, 
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "HomeFrog" + homeFrogCount + json, 
                     gameObjectFromArray.GetComponent<HomeFrog>().ToJson());
                 homeFrogCount++;
             }
             else if (gameObjectFromArray.name == "ScoreKeeper")
             {
-                File.WriteAllText(_dateTimeFolder + "/ScoreKeeper" + json, 
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "ScoreKeeper" + json, 
                     gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson());
             }
             else if(gameObjectFromArray.CompareTag("LevelInfo"))
             {
-                File.WriteAllText(_dateTimeFolder + "/LevelInfo" + json, 
+                File.WriteAllText(_dateTimeFolder + Path.DirectorySeparatorChar + "LevelInfo" + json, 
                     gameObjectFromArray.GetComponent<LevelInfo>().ToJson());
             }
             
@@ -142,11 +142,12 @@ public class Saver : MonoBehaviour
     public void SaveStateForRollBack()
     {
         string dateTime = System.DateTime.Now.ToString("HH-mm-ss");
-        const string currentGameFolder = "Assets/SaveFiles/CurrentGame/";
+        string currentGameFolder = RootPathStorer.RootPath + "CurrentGame" + Path.DirectorySeparatorChar;
         string folderForRollback = currentGameFolder + dateTime;
         if (!Directory.Exists(folderForRollback))
         {
             Directory.CreateDirectory(folderForRollback);
+            print(folderForRollback);
         }
         
         _gameObjects = FindObjectsOfType<GameObject>() ;
@@ -155,7 +156,7 @@ public class Saver : MonoBehaviour
         int turtleCount = 0;
         int carCount = 0;
         int homeFrogCount = 0;
-        string achievementsFolder = folderForRollback + "/Achievements";
+        string achievementsFolder = folderForRollback + Path.DirectorySeparatorChar + "Achievements";
         if (!Directory.Exists(achievementsFolder))
         {
             Directory.CreateDirectory(achievementsFolder);
@@ -164,7 +165,7 @@ public class Saver : MonoBehaviour
         var achievements = Achievements.Get();
         for (int i = 0; i < Achievements.Get().Count; i++)
         {
-            string fileName = achievementsFolder + "/Achievement" + i + json;
+            string fileName = achievementsFolder + Path.DirectorySeparatorChar +"Achievement" + i + json;
             File.WriteAllText(fileName, string.Empty);
             File.WriteAllText(fileName, achievements[i].ToJson());
         }
@@ -172,38 +173,38 @@ public class Saver : MonoBehaviour
         {
             if (gameObjectFromArray.CompareTag("Log"))
             {
-                File.WriteAllText(folderForRollback + "/Log" + logCount + json, 
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "Log" + logCount + json, 
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 logCount++;
             } else if (gameObjectFromArray.CompareTag("Frog"))
             {
-                File.WriteAllText(folderForRollback + "/Frog" + json,
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "Frog" + json,
                 gameObjectFromArray.GetComponent<FrogMovement>().ToJson());
             }
             else if (gameObjectFromArray.CompareTag("Turtle"))
             {
-                File.WriteAllText(folderForRollback + "/Turtle" + turtleCount + json,
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "Turtle" + turtleCount + json,
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 turtleCount++;
             } else if (gameObjectFromArray.CompareTag("Car"))
             {
-                File.WriteAllText(folderForRollback + "/Car" + carCount + json, 
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "Car" + carCount + json, 
                     gameObjectFromArray.GetComponent<SlidingObjectBehaviour>().ToJson());
                 carCount++;
             } else if (gameObjectFromArray.CompareTag("HomeFrog"))
             {
-                File.WriteAllText(folderForRollback + "/HomeFrog" + homeFrogCount + json, 
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "HomeFrog" + homeFrogCount + json, 
                     gameObjectFromArray.GetComponent<HomeFrog>().ToJson());
                 homeFrogCount++;
             }
             else if (gameObjectFromArray.name == "ScoreKeeper")
             {
-                File.WriteAllText(folderForRollback + "/ScoreKeeper" + json, 
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "ScoreKeeper" + json, 
                     gameObjectFromArray.GetComponent<ScoreKeeper>().ToJson());
             }
             else if(gameObjectFromArray.CompareTag("LevelInfo"))
             {
-                File.WriteAllText(folderForRollback + "/LevelInfo" + json, 
+                File.WriteAllText(folderForRollback + Path.DirectorySeparatorChar + "LevelInfo" + json, 
                     gameObjectFromArray.GetComponent<LevelInfo>().ToJson());
             }
             
