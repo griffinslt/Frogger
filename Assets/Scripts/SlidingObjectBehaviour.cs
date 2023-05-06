@@ -44,7 +44,7 @@ public class SlidingObjectBehaviour : MonoBehaviour
         _ids++;
         startingSide = transform.position.x <= 0 ? StartingSide.Left : StartingSide.Right;
         var velocity = rb2d.velocity;
-        if (startingSide == StartingSide.Left && !gameObject.name.Contains("Turtle") || transform.rotation.z == 0)
+        if (transform.rotation.z == 0)
         {
             velocity.x += speed;
         }

@@ -6,5 +6,6 @@ using UnityEngine;
 public class RootPathStorer: MonoBehaviour
 {
 
-    public static readonly string RootPath = Application.persistentDataPath+ Path.DirectorySeparatorChar + "SaveFiles" + Path.DirectorySeparatorChar;
+    public static readonly string RootPath = Application.persistentDataPath + Path.DirectorySeparatorChar + "SaveFiles" + Path.DirectorySeparatorChar;
 }
+  

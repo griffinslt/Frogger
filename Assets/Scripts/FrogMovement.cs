@@ -16,7 +16,6 @@ using Vector3 = UnityEngine.Vector3;
 [RequireComponent(typeof(Rigidbody2D))]
 public class FrogMovement : MonoBehaviour, IEntity
 {
-
     public UnityEvent<bool> onTriggerChange;
     [SerializeField] private AchievementManager achievementManager;
     [SerializeField] private float speed;
@@ -47,7 +46,8 @@ public class FrogMovement : MonoBehaviour, IEntity
         public bool _died;
     }
 
-    public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog, int numberOfJumps, bool died)
+    public void LoadData(float speed, Vector2 position, bool onPlatform, int furthestTraveled, bool withLadyFrog,
+        int numberOfJumps, bool died)
     {
         this.speed = speed;
         _currentPos = position;
@@ -57,7 +57,6 @@ public class FrogMovement : MonoBehaviour, IEntity
         _numberOfJumps = numberOfJumps;
         transform.position = _currentPos;
         _died = died;
-
     }
 
     private void Awake()
@@ -68,13 +67,12 @@ public class FrogMovement : MonoBehaviour, IEntity
 
     private void Update()
     {
-        if (Time.timeSinceLevelLoad < 1) return; 
+        if (Time.timeSinceLevelLoad < 1) return;
         if (Time.timeScale > 0)
         {
             CheckMovement();
             CheckCollisions();
         }
-        
     }
 
     private void LateUpdate()
@@ -96,18 +94,18 @@ public class FrogMovement : MonoBehaviour, IEntity
     {
         if (_died) return;
         var level = SceneManager.GetActiveScene().buildIndex;
-        AchievementManager.NotifyAchievementComplete(Achievements.FindAchievementByName("Level " + level + " Complete No Death"));
+        AchievementManager.NotifyAchievementComplete(
+            Achievements.FindAchievementByName("Level " + level + " Complete No Death"));
     }
-    
+
 
     private void NumOfForwardJumpsCheck()
     {
         if (_furthestTraveled < _currentPos.y)
         {
-            _furthestTraveled = (int) _currentPos.y;
+            _furthestTraveled = (int)_currentPos.y;
             ScoreKeeper.Instance.AddScore(10);
         }
-        
     }
 
     private Vector2 RoundPosition(Vector3 position)
@@ -120,7 +118,6 @@ public class FrogMovement : MonoBehaviour, IEntity
         }
 
         return position;
-        
     }
 
     private void CheckMovement()
@@ -133,7 +130,8 @@ public class FrogMovement : MonoBehaviour, IEntity
         {
             NumOfForwardJumpsCheck();
         }
-        movement += InputHandler.BackwardButtonPressed(this,speed);
+
+        movement += InputHandler.BackwardButtonPressed(this, speed);
         movement += InputHandler.RightButtonPressed(this, speed);
         movement += InputHandler.LeftButtonPressed(this, speed);
         _currentPos += movement;
@@ -152,13 +150,13 @@ public class FrogMovement : MonoBehaviour, IEntity
             Achievement achievement;
             switch (_numberOfJumps)
             {
-                    
                 case 100:
-                     achievement = Achievements.FindAchievementByName("100 Jumps");
+                    achievement = Achievements.FindAchievementByName("100 Jumps");
                     if (!achievement.IsUnlocked())
                     {
                         AchievementManager.NotifyAchievementComplete(achievement);
                     }
+
                     break;
                 case 250:
                     achievement = Achievements.FindAchievementByName("250 Jumps");
@@ -166,6 +164,7 @@ public class FrogMovement : MonoBehaviour, IEntity
                     {
                         AchievementManager.NotifyAchievementComplete(achievement);
                     }
+
                     break;
                 case 500:
                     achievement = Achievements.FindAchievementByName("500 Jumps");
@@ -173,6 +172,7 @@ public class FrogMovement : MonoBehaviour, IEntity
                     {
                         AchievementManager.NotifyAchievementComplete(achievement);
                     }
+
                     break;
             }
         }
@@ -181,10 +181,8 @@ public class FrogMovement : MonoBehaviour, IEntity
             Console.WriteLine(e);
             print("Achievement does not exist");
         }
-        
     }
-
-    // ReSharper disable Unity.PerformanceAnalysis
+    
     private void CheckCollisions()
     {
         List<Collider2D> collider2Ds = new List<Collider2D>();
@@ -209,7 +207,7 @@ public class FrogMovement : MonoBehaviour, IEntity
             int countdown = (int)speedPowerUpCountDown;
             speedText.text = countdown.ToString();
         }
-        
+
         scoreMultiplierCountDown -= Time.deltaTime;
         if (scoreMultiplierCountDown < 0)
         {
@@ -221,19 +219,16 @@ public class FrogMovement : MonoBehaviour, IEntity
             int countdown = (int)scoreMultiplierCountDown;
             scoreMultiplyText.text = countdown.ToString();
         }
-        
     }
 
     private void CheckSpeedCollision(Collider2D collision)
     {
-
         if (collision.CompareTag("SpeedPowerUp"))
         {
             speedPowerUpCountDown = 10;
             speed = 2;
             Destroy(collision.gameObject);
         }
-        
     }
 
     private void Check2XCollision(Collider2D collision)
@@ -244,8 +239,6 @@ public class FrogMovement : MonoBehaviour, IEntity
             ScoreKeeper.Instance.AddMultiplier(2);
             Destroy(collision.gameObject);
         }
-
-        
     }
 
     private void CheckHomeCollision(Collider2D collision)
@@ -264,6 +257,7 @@ public class FrogMovement : MonoBehaviour, IEntity
                 HomeFrogSpawner.Instance.SpawnHomeFrog(collision.transform);
                 ScoreKeeper.Instance.AddScore(50);
             }
+
             home.Visit();
             transform.position = Vector2.zero;
         }
@@ -278,102 +272,96 @@ public class FrogMovement : MonoBehaviour, IEntity
             transform.position = collision.transform.position;
         }
     }
+
     private void CheckLogCollision(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Log"))
         {
             _onPlatform = true;
             _rb2D.velocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-
         }
     }
 
     private void CheckRiverCollision(Collider2D collision)
+    {
+        if (!collision.gameObject.CompareTag("River") || _onPlatform) return;
+        _rb2D.velocity = Vector2.zero;
+        transform.position = new Vector2(0, 0);
+        _died = true;
+    }
+
+
+    private void CheckCarCollision(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Car"))
         {
-            if (!collision.gameObject.CompareTag("River") || _onPlatform) return;
-            _rb2D.velocity = Vector2.zero;
             transform.position = new Vector2(0, 0);
             _died = true;
-
         }
+    }
 
-        
-        private void CheckCarCollision(Collider2D collision)
+    private void CheckBorderCollision(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("LeftBarrier"))
         {
-            if (collision.gameObject.CompareTag("Car"))
-            {
-                transform.position = new Vector2(0, 0);
-            }
-
+            transform.position = new Vector2(_currentPos.x + 1, _currentPos.y);
+            _rb2D.velocity = Vector2.zero;
         }
-        
-        private void CheckBorderCollision(Collider2D collision)
+
+        if (collision.gameObject.CompareTag("RightBarrier"))
         {
-            if (collision.gameObject.CompareTag("LeftBarrier"))
-            {
-                transform.position = new Vector2(_currentPos.x+1, _currentPos.y);
-                _rb2D.velocity = Vector2.zero;
-            }
-
-            if (collision.gameObject.CompareTag("RightBarrier"))
-            {
-                transform.position = new Vector2(_currentPos.x-1, _currentPos.y);
-                _rb2D.velocity = Vector2.zero;
-            }
-
-            if (collision.gameObject.CompareTag("UpBarrier"))
-            { 
-                transform.position = new Vector2(_currentPos.x, _currentPos.y -1);
-            }
-            if (collision.gameObject.CompareTag("DownBarrier"))
-            {
-                transform.position = new Vector2(_currentPos.x, _currentPos.y + 1);
-            }
-
+            transform.position = new Vector2(_currentPos.x - 1, _currentPos.y);
+            _rb2D.velocity = Vector2.zero;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        if (collision.gameObject.CompareTag("UpBarrier"))
         {
-            CheckHomeCollision(collision);
+            transform.position = new Vector2(_currentPos.x, _currentPos.y - 1);
         }
 
-
-        private void OnTriggerExit2D(Collider2D collision)
+        if (collision.gameObject.CompareTag("DownBarrier"))
         {
-            if (collision.CompareTag("Log") || collision.CompareTag("Turtle"))
-            {
-                OffPlatform();
-            }
-           
-            onTriggerChange?.Invoke(false);
+            transform.position = new Vector2(_currentPos.x, _currentPos.y + 1);
         }
+    }
 
-        private void OffPlatform()
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CheckHomeCollision(collision);
+    }
+
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Log") || collision.CompareTag("Turtle"))
         {
-            _rb2D.velocity = new Vector2(0, 0);
-            _onPlatform = false;
-            transform.position = RoundPosition(transform.position);
+            OffPlatform();
         }
 
-        public string ToJson()
+        onTriggerChange?.Invoke(false);
+    }
+
+    private void OffPlatform()
+    {
+        _rb2D.velocity = new Vector2(0, 0);
+        _onPlatform = false;
+        transform.position = RoundPosition(transform.position);
+    }
+
+    public string ToJson()
+    {
+        var data = new FrogData()
         {
-            var data = new FrogData()
-            {
-                speed = speed,
-                _furthestTraveled = _furthestTraveled,
-                _withLadyFrog = _withLadyFrog,
-                CurrentPositionX = _currentPos.x,
-                CurrentPositionY = _currentPos.y,
-                _numberOfJumps = _numberOfJumps,
-                _onPlatform = _onPlatform,
-                _died = _died,
-            };
+            speed = speed,
+            _furthestTraveled = _furthestTraveled,
+            _withLadyFrog = _withLadyFrog,
+            CurrentPositionX = _currentPos.x,
+            CurrentPositionY = _currentPos.y,
+            _numberOfJumps = _numberOfJumps,
+            _onPlatform = _onPlatform,
+            _died = _died,
+        };
 
-            return JsonUtility.ToJson(data);
-        }
-
-
-
-
-
+        return JsonUtility.ToJson(data);
+    }
 }

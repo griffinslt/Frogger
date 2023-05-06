@@ -30,6 +30,11 @@ public class HighestLevelGetter : MonoBehaviour
             return "1";
 
         }
+
+        if (int.Parse(File.ReadAllText(file)) > 3)
+        {
+            return "3";
+        }
         return File.ReadAllText(file);
     }
     
