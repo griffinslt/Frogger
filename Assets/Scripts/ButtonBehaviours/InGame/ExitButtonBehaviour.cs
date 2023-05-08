@@ -1,8 +1,5 @@
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Windows;
 using Directory = System.IO.Directory;
 
 namespace ButtonBehaviours.InGame
@@ -11,7 +8,6 @@ namespace ButtonBehaviours.InGame
     {
         public void OnButtonPress()
         {
-            // SceneManager.LoadScene("Menu");
             string currentGameFolder = RootPathStorer.RootPath +  "CurrentGame" + Path.DirectorySeparatorChar;
             if (Directory.Exists(currentGameFolder))
             {

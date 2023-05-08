@@ -12,11 +12,11 @@ public class LoadStateButtonBehaviour : MonoBehaviour
     {
         string folder = RootPathStorer.RootPath+ "CurrentGame" + Path.DirectorySeparatorChar + buttonText.text;
         
-        SlidingObjectBehaviour._ids = 0;
+
         TransitionLoader.Instance.LoadTransition(SceneManager.GetActiveScene().buildIndex);
-        SlidingObjectBehaviour._ids = 0;
+
         FolderToLoadFrom.FolderPath = folder;
-        SlidingObjectBehaviour._ids = 0;
+
         
     }
 }

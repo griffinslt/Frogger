@@ -195,7 +195,12 @@ public class FrogMovement : MonoBehaviour, IEntity
             Check2XCollision(collision);
             CheckSpeedCollision(collision);
         }
+        
+        PowerUpCountdown();
+    }
 
+    private void PowerUpCountdown()
+    {
         speedPowerUpCountDown -= Time.deltaTime;
         if (speedPowerUpCountDown < 0)
         {

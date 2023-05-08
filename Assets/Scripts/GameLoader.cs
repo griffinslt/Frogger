@@ -55,7 +55,6 @@ public class GameLoader : MonoBehaviour
 
         foreach (var file in enumerable)
         {
-            SlidingObjectBehaviour._ids = 3;
             string filename = Path.GetFileNameWithoutExtension(file);
             string fileJson = File.ReadAllText(file);
             var jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(fileJson);
